@@ -1,0 +1,364 @@
+.features {
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+  width: 100%;
+}
+
+.featureSvg {
+  height: 200px;
+  width: 200px;
+}
+
+.celestiaHome {
+  padding: 4rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.rugsafeHome {
+  padding: 4rem 2rem;
+  overflow: hidden;
+  background: linear-gradient(to right, #ffffff, #f0f0f0);
+  color: #333;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.rugsafeHome.darkMode {
+  background: linear-gradient(to right, #1a1a1a, #2a2a2a);
+  color: #fff;
+}
+
+.heroContent {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.heroText {
+  flex: 1;
+  max-width: 600px;
+}
+
+.heroTitle {
+  font-size: 4rem;
+  color: #a855f7;
+  margin: 0 0 1rem;
+  line-height: 1;
+}
+
+.heroSubtitle {
+  font-size: 3rem;
+  margin: 0 0 1.5rem;
+  line-height: 1.2;
+}
+
+.heroDescription {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.heroButtons {
+  display: flex;
+  gap: 1rem;
+}
+
+.buttonPrimary,
+.buttonSecondary {
+  padding: 0.75rem 1.5rem;
+  border-radius: 2rem;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.buttonPrimary {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.buttonPrimary:hover {
+  background-color: #45a049;
+}
+
+.buttonSecondary {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.buttonSecondary:hover {
+  background-color: #e0e0e0;
+}
+
+.darkMode .buttonSecondary {
+  background-color: #333;
+  color: #fff;
+}
+
+.darkMode .buttonSecondary:hover {
+  background-color: #444;
+}
+
+.heroImage {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.heroImage img {
+  max-width: 100%;
+  height: auto;
+}
+
+.features {
+  padding: 4rem 0;
+  width: 100%;
+}
+
+.feature {
+  text-align: center;
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.featureIcon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.feature:hover .featureIcon {
+  transform: scale(1.2);
+}
+
+.featureDescription {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.featureDescription.visible {
+  opacity: 1;
+  max-height: 200px;
+}
+
+.themeToggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px;
+  border-radius: 50%;
+  border: none;
+  background-color: #f0f0f0;
+  color: #333;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.themeToggle.darkMode {
+  background-color: #333;
+  color: #fff;
+}
+
+@media screen and (max-width: 768px) {
+  .rugsafeHome {
+    padding: 3rem 1.5rem;
+  }
+
+  .heroContent {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .heroText {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .heroTitle {
+    font-size: 3rem;
+  }
+
+  .heroSubtitle {
+    font-size: 2rem;
+  }
+
+  .heroButtons {
+    justify-content: center;
+  }
+
+  .heroImage {
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .features .row {
+    flex-direction: column;
+  }
+
+  .feature {
+    margin-bottom: 2rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .rugsafeHome {
+    padding: 2rem 1rem;
+  }
+
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1.75rem;
+  }
+
+  .heroDescription {
+    font-size: 1rem;
+  }
+
+  .buttonPrimary,
+  .buttonSecondary {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  .heroButtons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .featureIcon {
+    font-size: 1.75rem;
+  }
+}
+
+.heroBanner {
+  padding: 4rem 0;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.heroContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.heroText {
+  flex: 1;
+  max-width: 600px;
+}
+
+.heroTitle {
+  font-size: 4rem;
+  color: #a855f7;
+}
+
+.heroSubtitle {
+  font-size: 3rem;
+  color: #333;
+  margin-top: 0.5rem;
+}
+
+.heroDescription {
+  font-size: 1.2rem;
+  color: #666;
+  margin: 1rem 0 2rem;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.buildButton {
+  background-color: #4CAF50 !important;
+  color: white !important;
+  border: none !important;
+}
+
+.introButton {
+  background-color: #f0f0f0 !important;
+  color: #333 !important;
+}
+
+.heroImage {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.heroImage img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media screen and (max-width: 966px) {
+  .heroBanner {
+    padding: 2rem;
+  }
+
+  .heroContent {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .heroText {
+    text-align: center;
+  }
+
+  .heroTitle {
+    font-size: 3rem;
+  }
+
+  .heroSubtitle {
+    font-size: 2rem;
+  }
+
+  .buttons {
+    justify-content: center;
+  }
+
+  .heroImage {
+    margin-top: 2rem;
+    justify-content: center;
+  }
+}
+/* Default styles */
+.feature {
+  text-align: center;
+  padding: 20px;
+}
+
+.featureIcon {
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.featureDescription {
+  font-size: 1em;
+}
+
+/* Light mode */
+.light .feature {
+  color: #000; /* Black text for light mode */
+}
+
+/* Dark mode */
+.dark .feature {
+  color: #fff; /* White text for dark mode */
+}
