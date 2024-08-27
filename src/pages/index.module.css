@@ -3,27 +3,30 @@
  * and scoped locally.
  */
 
-
+/* Hero Banner */
 .heroBanner {
   padding: 4rem 0;
   text-align: center;
   position: relative;
   overflow: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Responsive for Hero Banner */
 @media screen and (max-width: 996px) {
   .heroBanner {
     padding: 2rem;
   }
 }
 
+/* Buttons */
 .buttons {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-
+/* Features Section */
 .features {
   display: flex;
   align-items: center;
@@ -31,17 +34,13 @@
   width: 100%;
 }
 
+/* Feature SVG */
 .featureSvg {
   height: 200px;
   width: 200px;
 }
 
-.celestiaHome {
-  padding: 4rem 0;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
+/* Rugsafe Home Section */
 .rugsafeHome {
   padding: 4rem 2rem;
   overflow: hidden;
@@ -55,6 +54,7 @@
   color: #fff;
 }
 
+/* Hero Content */
 .heroContent {
   display: flex;
   align-items: flex-start;
@@ -63,11 +63,13 @@
   margin: 0 auto;
 }
 
+/* Hero Text */
 .heroText {
   flex: 1;
   max-width: 600px;
 }
 
+/* Hero Title */
 .heroTitle {
   font-size: 4rem;
   color: #a855f7;
@@ -75,23 +77,27 @@
   line-height: 1;
 }
 
+/* Hero Subtitle */
 .heroSubtitle {
   font-size: 3rem;
   margin: 0 0 1.5rem;
   line-height: 1.2;
 }
 
+/* Hero Description */
 .heroDescription {
   font-size: 1.2rem;
   margin-bottom: 2rem;
   line-height: 1.5;
 }
 
+/* Hero Buttons */
 .heroButtons {
   display: flex;
   gap: 1rem;
 }
 
+/* Primary and Secondary Buttons */
 .buttonPrimary,
 .buttonSecondary {
   padding: 0.75rem 1.5rem;
@@ -101,6 +107,7 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Primary Button */
 .buttonPrimary {
   background-color: #4CAF50;
   color: white;
@@ -110,6 +117,7 @@
   background-color: #45a049;
 }
 
+/* Secondary Button */
 .buttonSecondary {
   background-color: #f0f0f0;
   color: #333;
@@ -119,6 +127,7 @@
   background-color: #e0e0e0;
 }
 
+/* Dark Mode for Secondary Button */
 .darkMode .buttonSecondary {
   background-color: #333;
   color: #fff;
@@ -128,6 +137,7 @@
   background-color: #444;
 }
 
+/* Hero Image */
 .heroImage {
   flex: 1;
   display: flex;
@@ -140,6 +150,7 @@
   height: auto;
 }
 
+/* Features Section */
 .features {
   padding: 4rem 0;
   width: 100%;
@@ -173,6 +184,7 @@
   max-height: 200px;
 }
 
+/* Theme Toggle */
 .themeToggle {
   position: fixed;
   top: 20px;
@@ -192,6 +204,7 @@
   color: #fff;
 }
 
+/* Responsive Adjustments */
 @media screen and (max-width: 768px) {
   .rugsafeHome {
     padding: 3rem 1.5rem;
@@ -266,6 +279,7 @@
   }
 }
 
+/* Default Styles */
 .heroBanner {
   padding: 4rem 0;
   text-align: left;
@@ -333,6 +347,7 @@
   height: auto;
 }
 
+/* Responsive Hero Adjustments */
 @media screen and (max-width: 966px) {
   .heroBanner {
     padding: 2rem;
@@ -364,12 +379,8 @@
     justify-content: center;
   }
 }
-/* Default styles */
-.heroBanner {
-  padding: 20px;
-}
 
-/* Light mode */
+/* Light Mode */
 .light .heroBanner {
   background-color: #ffffff; /* Light background */
   color: #000000; /* Black text */
@@ -380,7 +391,7 @@
   color: #000000; /* Black text for navbar */
 }
 
-/* Dark mode */
+/* Dark Mode */
 .dark .heroBanner {
   background-color: #1c1c1c; /* Dark background */
   color: #ffffff; /* White text */
@@ -393,4 +404,33 @@
 
 .dark .navbar a {
   color: #ffffff; /* Ensure links are white */
+}
+.rugsafeHome .heroTitle {
+  color: #a855f7; /* RugSafe title color */
+}
+
+.rugsafeHome.darkMode .heroTitle {
+  color: #a855f7; /* Keep RugSafe title purple in dark mode */
+}
+
+.rugsafeHome.darkMode .heroSubtitle {
+  color: #ccc; /* Light gray for subtitle */
+}
+
+.rugsafeHome.darkMode .heroDescription {
+  color: #ddd; /* Light gray for description */
+}
+
+.rugsafeHome.darkMode .buttonPrimary {
+  background-color: #2e7d32; /* Dark green button */
+  color: #fff;
+}
+
+.rugsafeHome.darkMode .buttonSecondary {
+  background-color: #444; /* Dark gray button */
+  color: #fff;
+}
+
+.rugsafeHome.darkMode .buttonSecondary:hover {
+  background-color: #555; /* Slightly lighter gray on hover */
 }
