@@ -9,7 +9,7 @@ const config: Config = {
 
   // Set the production url of your site here
   url: 'https://docs.rugsafe.com',
-  baseUrl: '/',
+  baseUrl: '/RugSafeDocs', // was /
 
   organizationName: 'rugsafe',
   projectName: 'rugsafe-docs',
