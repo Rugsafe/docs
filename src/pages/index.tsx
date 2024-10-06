@@ -25,7 +25,7 @@ function HomepageHeader() {
           </p>
           <div className={styles.heroButtons}>
             <Link className={clsx(styles.buttonPrimary, colorMode === 'dark' && styles.darkMode)} to="https://rugsafe.io/assets/paper/rugsafe.pdf">
-              Read Black Paper
+              Read Paper
             </Link>
             <Link className={clsx(styles.buttonSecondary, colorMode === 'dark' && styles.darkMode)} to="/docs/intro">
               Documentation
