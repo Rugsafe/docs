@@ -4,7 +4,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'RugSafe Documentation',
-  tagline: 'Secure Your Trades with RugSafe',
+  tagline: 'A Multichain Protocol for Recovering from and Defending against Rug Pulls',
   favicon: 'img/rugsafe_character_black_background.png',
 
   // Set the production url of your site here
@@ -110,7 +110,7 @@ const config: Config = {
       darkTheme: prismThemes.dracula,
     },
     colorMode: {
-      defaultMode: 'light',
+      defaultMode: 'dark',
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
