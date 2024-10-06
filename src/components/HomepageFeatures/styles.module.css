@@ -362,3 +362,47 @@
 .dark .feature {
   color: #fff; /* White text for dark mode */
 }
+.featuresSection {
+  margin: 50px 0;
+}
+
+.featuresRow {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap; /* Ensure it wraps nicely on smaller screens */
+}
+
+.featureBox {
+  background-color: rgba(255, 255, 255, 0.05); /* Subtle grayish background */
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+  padding: 25px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  max-width: 280px;
+  margin: 0 auto; /* Centers the box on smaller screens */
+  min-height: 200px;
+}
+
+.featureBox:hover {
+  transform: translateY(-10px); /* Slight lift effect */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); /* Slightly stronger shadow on hover */
+}
+
+.featureIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--ifm-color-primary); /* Color for the icon */
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--ifm-color-content); /* Ensure contrast for the title */
+}
+
+p {
+  font-size: 1rem;
+  color: var(--ifm-color-secondary);
+  opacity: 0.9;
+}

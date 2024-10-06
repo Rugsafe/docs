@@ -3,13 +3,9 @@ import clsx from 'clsx';
 import styles from './styles.module.css';
 import { useColorMode } from '@docusaurus/theme-common';
 
-type FeatureItem = {
-  title: string;
-  icon: string;
-  description: JSX.Element;
-};
 
-const FeatureList: FeatureItem[] = [
+// Define the list of features
+const FeatureList = [
   {
     title: 'Learn',
     icon: '⚖️',
@@ -47,34 +43,25 @@ const FeatureList: FeatureItem[] = [
     ),
   },
 ];
-
-function Feature({title, icon, description}: FeatureItem) {
-  const [isHovered, setIsHovered] = useState(false);
-
+function Feature({ title, icon, description }) {
   return (
-    <div 
-      className={clsx('col col--3', styles.feature)}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className={clsx('col col--3', styles.featureBox)}>
       <div className={styles.featureIcon}>{icon}</div>
-      <div className="padding-horiz--md">
-        <h3>{title}</h3>
-        <p className={clsx(styles.featureDescription, {[styles.visible]: isHovered})}>{description}</p>
-      </div>
+      <h3>{title}</h3>
+      <p>{description}</p>
     </div>
   );
 }
 
-export default function HomepageFeatures(): JSX.Element {
-  const { colorMode } = useColorMode(); // Get the current color mode
+export default function HomepageFeatures() {
+  const { colorMode } = useColorMode();
 
   return (
-    <section className={clsx(styles.features, styles[colorMode])}>
+    <section className={clsx(styles.featuresSection, styles[colorMode])}>
       <div className="container">
-        <div className="row">
-          {FeatureList.map((props, idx) => (
-            <Feature key={idx} {...props} />
+        <div className={clsx('row', styles.featuresRow)}>
+          {FeatureList.map((feature, idx) => (
+            <Feature key={idx} {...feature} />
           ))}
         </div>
       </div>

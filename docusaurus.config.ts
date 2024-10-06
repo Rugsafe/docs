@@ -5,16 +5,14 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'RugSafe Documentation',
   tagline: 'Secure Your Trades with RugSafe',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/rugsafe_character_black_background.png',
 
   // Set the production url of your site here
   url: 'https://docs.rugsafe.com',
-  // Set the /<baseUrl>/ pathname under which your site is served
   baseUrl: '/',
 
-  // GitHub pages deployment config.
-  organizationName: 'rugsafe', // Your GitHub org/user name.
-  projectName: 'rugsafe-docs', // Your repo name.
+  organizationName: 'rugsafe',
+  projectName: 'rugsafe-docs',
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -30,13 +28,11 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          // Remove this to remove the "edit this page" links.
-          editUrl: 'https://github.com/rugsafe/rugsafe-docs/tree/main/',
+          editUrl: 'https://github.com/rugsafe/rugsafedocs/tree/main/',
         },
         blog: {
           showReadingTime: true,
-          // Remove this to remove the "edit this page" links.
-          editUrl: 'https://github.com/rugsafe/rugsafe-docs/tree/main/',
+          editUrl: 'https://github.com/rugsafe/rugsafedocs/tree/main/',
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -46,13 +42,12 @@ const config: Config = {
   ],
 
   themeConfig: {
-    // Replace with your project's social card
     image: 'img/rugsafe-social-card.jpg',
     navbar: {
-      title: 'RugSafe Docs',
+      title: '',
       logo: {
         alt: 'RugSafe Logo',
-        src: 'img/logo.svg',
+        src: 'img/rugsafe.png',
       },
       items: [
         {
@@ -63,7 +58,7 @@ const config: Config = {
         },
         {to: '/blog', label: 'Blog', position: 'left'},
         {
-          href: 'https://github.com/rugsafe/rugsafe-docs',
+          href: 'https://github.com/rugsafe/rugsafedocs',
           label: 'GitHub',
           position: 'right',
         },
@@ -86,11 +81,11 @@ const config: Config = {
           items: [
             {
               label: 'Discord',
-              href: 'https://discordapp.com/invite/rugsafe',
+              href: 'https://discord.gg/ecMQ2D6nsu',
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/rugsafeprotocol',
+              href: 'https://x.com/rugsafehq?s=21&t=clPGowj2XOJTyL8AfYq2tQ',
             },
           ],
         },
@@ -103,18 +98,17 @@ const config: Config = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/rugsafe/rugsafe-docs',
+              href: 'https://github.com/rugsafe/rugsafedocs',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} RugSafe Protocol. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} RugSafe Protocol`,
     },
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
-    // Add this colorMode configuration
     colorMode: {
       defaultMode: 'light',
       disableSwitch: false,
