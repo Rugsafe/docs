@@ -2,7 +2,7 @@
 
 **Version:** 0.0.1  
 **Date:** August 1, 2024  
-**Contact:** [info@rugsafe.org](mailto:info@rugsafe.io)
+**Contact:** [info@rugsafe.io](mailto:info@rugsafe.io)
 
 
 [Read the Full Protocol Paper](https://rugsafe.io/assets/paper/rugsafe.pdf)
