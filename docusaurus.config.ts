@@ -28,11 +28,11 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          editUrl: 'https://github.com/rugsafe/rugsafe-docs/tree/main/',
+          editUrl: 'https://github.com/rugsafe/rugsafedocs/tree/main/',
         },
         blog: {
           showReadingTime: true,
-          editUrl: 'https://github.com/rugsafe/rugsafe-docs/tree/main/',
+          editUrl: 'https://github.com/rugsafe/rugsafedocs/tree/main/',
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -58,7 +58,7 @@ const config: Config = {
         },
         {to: '/blog', label: 'Blog', position: 'left'},
         {
-          href: 'https://github.com/rugsafe/rugsafe-docs',
+          href: 'https://github.com/rugsafe/rugsafedocs',
           label: 'GitHub',
           position: 'right',
         },
@@ -98,12 +98,12 @@ const config: Config = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/rugsafe/rugsafe-docs',
+              href: 'https://github.com/rugsafe/rugsafedocs',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} RugSafe Protocol. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} RugSafe Protocol`,
     },
     prism: {
       theme: prismThemes.github,

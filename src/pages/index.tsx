@@ -34,7 +34,7 @@ function HomepageHeader() {
           </div>
         </div>
         <div className={styles.heroImage}>
-          <img src="/img/vault.png" alt="RugSafe Vault" />
+          <img src="/img/janitor.png" alt="RugSafe Vault" />
         </div>
       </div>
     </header>
