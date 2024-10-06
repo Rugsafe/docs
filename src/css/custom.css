@@ -110,3 +110,53 @@ html[data-theme='dark'] .featureBox {
 .card p, .featureBox p {
   color: var(--ifm-font-color-secondary); /* Ensure paragraph text is also styled correctly */
 }
+
+/* Light Mode Footer */
+html[data-theme='light'] .footer {
+  background-color: #f9f9f9;  /* Light background for light mode */
+  color: #000;  /* Black text in light mode */
+}
+
+/* Dark Mode Footer */
+html[data-theme='dark'] .footer {
+  background-color: #181818;  /* Dark background for dark mode */
+  color: #fff;  /* White text in dark mode */
+}
+
+/* Ensure that links in the footer are readable in both modes */
+.footer a {
+  color: var(--ifm-link-color); /* Use Docusaurus link color variable */
+}
+
+html[data-theme='light'] .footer a {
+  color: #007bff;  /* Customize link color in light mode if necessary */
+}
+
+html[data-theme='dark'] .footer a {
+  color: #a0cfff;  /* Customize link color in dark mode if necessary */
+}
+
+/* Light Mode Footer Headings */
+html[data-theme='light'] .footer__title {
+  color: #000;  /* Black text for footer headings in light mode */
+}
+
+/* Dark Mode Footer Headings */
+html[data-theme='dark'] .footer__title {
+  color: #fff;  /* White text for footer headings in dark mode */
+}
+
+/* Link colors for footer in both themes */
+.footer__link-item a {
+  color: var(--ifm-color-primary); /* Use the Docusaurus primary link color */
+}
+
+/* Optional customization for links in light mode */
+html[data-theme='light'] .footer__link-item a {
+  color: #007bff;  /* Blue link color for light mode */
+}
+
+/* Optional customization for links in dark mode */
+html[data-theme='dark'] .footer__link-item a {
+  color: #a0cfff;  /* Light blue link color for dark mode */
+}
