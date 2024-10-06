@@ -12,7 +12,7 @@ const config: Config = {
   baseUrl: '/RugSafeDocs', // was /
 
   organizationName: 'rugsafe',
-  projectName: 'rugsafe-docs',
+  projectName: 'rugsafedocs',
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
