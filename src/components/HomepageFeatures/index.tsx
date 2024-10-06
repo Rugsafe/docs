@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import styles from './styles.module.css';
 import { useColorMode } from '@docusaurus/theme-common';
-
 
 // Define the list of features
 const FeatureList = [
@@ -43,6 +42,7 @@ const FeatureList = [
     ),
   },
 ];
+
 function Feature({ title, icon, description }) {
   return (
     <div className={clsx('col col--3', styles.featureBox)}>

@@ -56,3 +56,57 @@
 .footer__copyright {
   color: #999; /* Slightly lighter text for copyright */
 }
+
+/* Change the font color of all Markdown text to black in light mode */
+html[data-theme='light'] {
+  --ifm-font-color-base: #000;
+}
+
+/* Change the font color of all Markdown text to white in dark mode */
+html[data-theme='dark'] {
+  --ifm-font-color-base: #fff;
+}
+
+/* Target specific elements like h1, p, etc. */
+.markdown h1 {
+  color: var(--ifm-font-color-base); /* This ensures the color changes based on the theme */
+}
+
+.markdown p {
+  color: var(--ifm-font-color-base);
+}
+
+/* Target the card text in light mode */
+html[data-theme='light'] .card, 
+html[data-theme='light'] .featureBox {
+  color: #000;  /* Black text for light mode */
+}
+
+/* Target the card text in dark mode */
+html[data-theme='dark'] .card, 
+html[data-theme='dark'] .featureBox {
+  color: #fff;  /* White text for dark mode */
+}
+
+/* Optionally ensure other card text elements are styled properly */
+.card h3, .featureBox h3 {
+  color: var(--ifm-font-color-base); /* Use the base font color */
+}
+
+.card p, .featureBox p {
+  color: var(--ifm-font-color-secondary); /* Secondary text color */
+}
+
+/* Ensure all text in the cards uses the Docusaurus theme variables */
+.card, .featureBox {
+  color: var(--ifm-font-color-base);  /* This will adjust automatically for light/dark mode */
+}
+
+/* For specific text elements inside the cards */
+.card h3, .featureBox h3 {
+  color: var(--ifm-font-color-base); /* Ensure headings are styled correctly */
+}
+
+.card p, .featureBox p {
+  color: var(--ifm-font-color-secondary); /* Ensure paragraph text is also styled correctly */
+}
