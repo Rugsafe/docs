@@ -40,7 +40,7 @@ jobs:
           DEPLOY_ENV: github
 
       - name: List files in out directory
-        run: ls -R out
+        run: ls -R build
 
       - name: Upload artifact for deployment
         uses: actions/upload-pages-artifact@v3
