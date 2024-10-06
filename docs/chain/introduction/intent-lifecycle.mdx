@@ -1,0 +1,36 @@
+---
+sidebar_position: 4
+---
+
+# Intent Lifecycle
+
+Understanding the lifecycle of an intent is crucial to grasp how Rugsafe’s chain manages decentralized logic. An intent (formerly referred to as a will) is created with certain parameters and is later either executed automatically or claimed by an authorized party. This lifecycle ensures the smooth and secure execution of complex actions such as token transfers, contract calls, or IBC messages.
+
+## Creation of Intents
+
+The lifecycle begins with the **creation** of an intent. A creator submits an intent with specific instructions, a set of components, and a block height at which the intent will either expire or be executed.
+
+- Intents can include a variety of components like token transfers, contract executions, or IBC messages.
+- The block height determines when the intent becomes executable or claimable.
+
+## Expiration and Execution of Intents
+
+Intents are typically tied to a block height, which serves as the **expiration** point. When the chain reaches this block height, the intent is processed in the **BeginBlocker** and its components are executed if certain conditions are met.
+
+- **Execution:** Upon reaching the target block height, the intent’s components are automatically executed.
+- **Expiration:** If an intent is not meant to be claimed but rather executed automatically, it moves to the expired state after execution.
+
+Intents can expire in two ways:
+1. Automatic execution (for intents that have execution components).
+2. Manual claiming (for intents that require specific claims to trigger execution).
+
+## Claiming Components of Intents
+
+Some intents require specific actions from external users, known as **claimants**, to be fulfilled. In this case, components of the intent are claimed individually, and each claim is verified for authenticity before the component is processed.
+
+- **Claiming:** Only authorized users can claim specific components of an intent.
+- **Verification:** Claims undergo checks using signature verification methods like Schnorr, Pedersen, or Gnark before they are accepted.
+
+## Summary
+
+The lifecycle of an intent follows a clear path from creation to expiration or execution. This process ensures that intents (or wills) are executed securely based on predetermined logic, making Rugsafe’s chain a powerful tool for managing decentralized actions across multiple chains and smart contracts.

@@ -1,0 +1,96 @@
+---
+sidebar_position: 2
+---
+
+# Vault Structure
+
+In Solana, our vault system is built on essential structures that manage and store tokens effectively. These structures ensure that vaults are secure and efficient for handling token minting, ownership, and overall state management on-chain.
+
+## Core Structures
+
+### Vault
+
+The **Vault** struct forms the foundation of the vault system. Each vault is associated with key attributes that define its role in token management. The vault itself contains:
+
+```text title="Vault Struct"
+pub struct Vault {
+    pub vault_account: Pubkey,
+    pub mint_token_a: Pubkey,
+    pub mint_a_token_a: Pubkey,
+    pub owner: Pubkey,
+}
+```
+
+- **Vault Account**: The Solana account that holds the actual tokens.
+- **Mint Token A**: The mint associated with the tokens held in the vault.
+- **Mint AToken A**: A special mint linked to **aTokens**, which act as proofs of deposit for Token A.
+- **Owner**: The public key of the account that owns the vault, typically the user who created it.
+
+This structure ensures that every vault has a clear relationship with its token mint and owner.
+
+### Vault Registry
+
+Managing multiple vaults requires an organized system. The **VaultRegistry** struct handles this by maintaining a list of all vaults in the system:
+
+```text title="VaultRegistry Struct"
+pub struct VaultRegistry {
+    pub vaults: Vec<Vault>,
+    pub capacity: usize,
+}
+```
+
+- **Vault List**: A collection of all vaults that have been created.
+- **Capacity**: The total number of vaults the system can handle at any given time.
+
+The registry is designed to scale, dynamically adjusting its capacity as the system grows, ensuring efficient management of vaults.
+
+## Serialization & Deserialization
+
+On-chain data must be serialized into byte arrays for storage and retrieval. Both the **Vault** and **VaultRegistry** structs have methods for serializing and deserializing their data, ensuring they can be written to and read from accounts on-chain.
+
+### Serialization
+
+```text title="Vault Serialization"
+pub fn serialize(&self) -> Vec<u8> {
+    let mut data = Vec::with_capacity(Self::LEN);
+    data.extend_from_slice(self.vault_account.as_ref());
+    data.extend_from_slice(self.mint_token_a.as_ref());
+    data.extend_from_slice(self.mint_a_token_a.as_ref());
+    data.extend_from_slice(self.owner.as_ref());
+    data
+}
+```
+
+### Deserialization
+
+```text title="Vault Deserialization"
+pub fn deserialize(input: &[u8]) -> Self {
+    let vault_account = Pubkey::new_from_array(input[0..32].try_into().unwrap());
+    let mint_token_a = Pubkey::new_from_array(input[32..64].try_into().unwrap());
+    let mint_a_token_a = Pubkey::new_from_array(input[64..96].try_into().unwrap());
+    let owner = Pubkey::new_from_array(input[96..128].try_into().unwrap());
+
+    Vault {
+        vault_account,
+        mint_token_a,
+        mint_a_token_a,
+        owner,
+    }
+}
+```
+
+These functions ensure that the vault data is safely stored on the Solana blockchain and can be retrieved when needed.
+
+## Expanding Capacity
+
+The registry has a predefined capacity, but it can grow to accommodate more vaults. When the number of vaults exceeds the current capacity, the system automatically doubles the capacity, ensuring smooth scalability as more users create vaults.
+
+```text title="VaultRegistry Capacity Growth"
+pub fn grow(&mut self) {
+    self.capacity *= 2;
+}
+```
+
+## Summary
+
+These core structures form the backbone of the vault system, providing a scalable and secure solution for handling tokens on Solana. The combination of vaults and a registry allows for flexible, efficient management of token ownership and interactions on-chain, abstracting complexity while ensuring robust functionality.

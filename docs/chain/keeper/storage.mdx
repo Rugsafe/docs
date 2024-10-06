@@ -1,0 +1,54 @@
+---
+sidebar_position: 2
+---
+
+# Intent State and Storage
+
+## KVStore Management for Intents
+
+The **KVStore** is central to how the Rugsafe chain manages on-chain state. The Keeper leverages the `KVStore` to persist intents, components, and associated data. This ensures that the on-chain state remains consistent and queryable across block heights.
+
+### Storing Intents
+
+When an intent is created, the Keeper stores the entire intent in the `KVStore` using a unique identifier, derived from its creator, beneficiary, and block height. This allows the intent to be uniquely referenced and retrieved when needed.
+
+```go
+func (k *Keeper) CreateWill(ctx context.Context, msg *types.MsgCreateWillRequest) (*types.Will, error) {
+    store := k.storeService.OpenKVStore(ctx)
+
+    // Construct unique intent ID based on concatenated values
+    intentID := createWillId(msg.Creator, msg.Name, msg.Beneficiary, msg.Height)
+
+    // Store the will object in KVStore
+    willBz := k.cdc.MustMarshal(&will)
+    key := types.GetWillKey(intentID)
+    store.Set([]byte(key), willBz)
+
+    return &will, nil
+}
+```
+
+### Retrieving Intents
+
+Intents are retrieved by their unique identifiers. The Keeper uses the `GetWillByID` function to fetch the serialized intent from the store and unmarshal it back into a usable Go structure.
+
+```go
+func (k Keeper) GetWillByID(ctx context.Context, id string) (*types.Will, error) {
+    store := k.storeService.OpenKVStore(ctx)
+
+    // Fetch the intent from the KVStore
+    willBz, err := store.Get(types.GetWillKey(id))
+    if err != nil {
+        return nil, fmt.Errorf("intent not found")
+    }
+
+    ...
+
+    return &will, nil
+}
+```
+
+### Prefix Iterators
+
+The Keeper can also use prefix iterators to query and iterate over multiple intents stored under a specific key prefix, such as those associated with a particular creator or block height.
+

@@ -1,0 +1,51 @@
+---
+sidebar_position: 2
+---
+
+# Vault Creation
+
+The process of creating a vault within our protocol involves several key steps. Vaults serve as secure storage mechanisms for managing tokens and interacting with the broader ecosystem.
+
+## Overview of Vault Creation
+
+The creation of a vault is the foundation for managing tokenized assets. A vault provides a secure, isolated environment where tokens can be stored, tracked, and interacted with, forming the backbone of various operations in the protocol.
+
+### Key Concepts
+
+- **Token Initialization**: Vault creation begins with the initialization of tokens. Two types of tokens are managed—those tied to the primary asset and the corresponding secondary asset.
+  
+- **Ownership and Access Control**: Each vault is owned by an individual, and strict ownership rules ensure that only authorized accounts can interact with it. The owner of the vault has control over its operations such as deposits, withdrawals, and token management.
+
+- **State Management**: The vault also needs to manage the internal state that tracks the interactions and balances within it. This includes both the minting of tokens and any future updates to the vault.
+
+## Steps Involved in Vault Creation
+
+Vault creation involves several key steps that establish the initial state of the vault and prepare it for further interactions.
+
+### 1. Initialize Token Accounts
+
+The first step in creating a vault is to initialize token accounts. These accounts are necessary to track the assets that will be stored in the vault. Ensuring these accounts are set up properly is critical for the functioning of the vault.
+
+### 2. Create Vault Accounts
+
+Next, the vault account is created. This account will be responsible for holding the actual assets tied to the vault, ensuring that tokens are secure and ready for any subsequent transactions.
+
+### 3. Ensure Rent Exemption
+
+Since the protocol operates on Solana, accounts must be rent-exempt to maintain network standards. It is important to ensure that all accounts tied to the vault are exempt from rent, allowing them to operate continuously without running out of funds.
+
+### 4. Set Up Ownership
+
+The owner of the vault is established during this phase, assigning control and access rights. The vault owner can perform specific operations such as deposits, withdrawals, and token interactions, ensuring that vault operations are securely handled.
+
+## Managing Vault State
+
+Once created, vaults continuously manage their state through interactions like deposits, withdrawals, and other operations. This state management ensures data integrity, allowing vaults to scale efficiently while keeping token balances accurate and transparent.
+
+:::tip
+Always verify ownership and rent-exemption before interacting with a newly created vault to prevent errors and maintain protocol standards.
+:::
+
+## Conclusion
+
+Vault creation is a key step in managing assets within the protocol, providing a secure foundation for tokenized operations. By carefully initializing tokens, ensuring proper ownership, and managing state, vaults offer a flexible and scalable way to handle digital assets.

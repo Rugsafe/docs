@@ -1,0 +1,42 @@
+---
+sidebar_position: 1
+---
+
+# Introduction
+
+Perpetual contracts are a type of derivative product that allows users to trade assets with leverage, without any expiration date. In decentralized systems like Solana, perpetual contracts enable users to open long or short positions on assets, manage collateral, and leverage their positions for increased exposure to market movements.
+
+## Key Concepts in Perpetual Contracts
+
+### Positions
+A **position** represents an open contract where a user bets on the price of an asset either increasing (**long**) or decreasing (**short**). Each position tracks important data such as the **side** (long or short), the **amount of collateral**, the **size in USD**, and the **price** at which the position was opened. Positions are fundamental to how perpetual contracts work, as they represent the user’s standing in the market.
+
+### Leverage
+Leverage allows traders to gain greater exposure to an asset than their collateral would normally allow. For example, with 10x leverage, a trader with $100 collateral can open a position worth $1,000. However, leverage also increases the risk of liquidation, where the trader’s position is forcibly closed due to insufficient collateral.
+
+### Liquidation
+A **liquidation** occurs when the value of a position falls below a certain threshold, meaning that the collateral backing the position is no longer sufficient to cover the loss. In Solana's implementation, when a position reaches this threshold, it is automatically liquidated to protect the protocol from further losses.
+
+## The Role of Collateral and Custody
+
+Collateral is the amount of value a user puts down to secure their position. In perpetual contracts, collateral can be adjusted dynamically—users can add more collateral to strengthen their position or remove it when they want to withdraw funds.
+
+### Custody Accounts
+Each position is associated with a **custody account**, which holds the collateral. Custody accounts are critical to ensuring that the assets backing the positions are secure and can only be accessed according to the rules of the contract.
+
+## Opening and Closing Positions
+
+When a user opens a position, the system creates a new entry that tracks the details of the trade: the **size**, **side**, and **collateral**. The position remains open until the user closes it, either manually or through a liquidation event.
+
+- **Opening a Position**: A user can open a position by submitting collateral and specifying whether they want to go long or short.
+- **Closing a Position**: When a position is closed, the system calculates the profit or loss and settles the collateral accordingly.
+
+## Solana-Specific Considerations
+
+On Solana, perpetual contracts are managed using **Program Derived Accounts (PDAs)**, which ensure that the positions and custody accounts are securely managed by the contract. Each user’s positions are stored in these accounts, allowing the system to securely track and manage trades on-chain.
+
+The Solana blockchain’s high throughput and low latency make it an ideal environment for running perpetual contracts, allowing for near-instant settlement of trades and management of positions.
+
+## Summary
+
+Perpetual contracts on Solana allow users to trade with leverage, opening and managing positions directly on-chain. Key features include flexible collateral management, custody accounts, and the use of Solana's PDAs to manage state securely. Understanding how positions work, and how they are secured by collateral, is critical for anyone participating in perpetual trading.

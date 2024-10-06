@@ -1,0 +1,84 @@
+---
+sidebar_position: 3
+---
+
+# Processors & Instruction
+
+In our Solana-based vault system, processing instructions is key to enabling interactions with vaults. The **Processor** handles routing instructions, ensuring the correct operations are performed based on user input, such as creating vaults, depositing tokens, or minting and burning tokens.
+
+## Instruction Dispatching
+
+The vault system dispatches instructions through a central function that decodes incoming instructions and routes them to the appropriate handler. This design allows a clean and modular approach to managing various vault-related actions.
+
+```text title="Processor Dispatch"
+match instruction {
+    VaultInstruction::CreateVault => Self::process_create_vault(program_id, accounts),
+    VaultInstruction::Deposit { amount } => Self::process_deposit(program_id, accounts, amount),
+    VaultInstruction::Withdraw { amount } => Self::process_withdraw(program_id, accounts, amount),
+    VaultInstruction::BurnRToken { amount } => Self::process_burn_rtoken(program_id, accounts, amount),
+    VaultInstruction::Faucet { amount } => Self::process_faucet(program_id, accounts, amount),
+}
+```
+
+- **CreateVault**: Handles the creation of new vaults, including minting tokens and setting up vault accounts.
+- **Deposit**: Allows users to deposit tokens into their vault, securing them on-chain.
+- **Withdraw**: Allows users to withdraw tokens from their vault, reducing their holdings.
+- **BurnRToken**: Handles burning of tokens from a user’s vault.
+- **Faucet**: Used for minting tokens to specific accounts.
+
+## Key Instruction Handlers
+
+### Creating a Vault
+
+The process of creating a vault is critical to the system’s operations. This instruction initializes a new vault and sets up the necessary accounts to handle token minting and deposits.
+
+```text title="process_create_vault"
+fn process_create_vault(program_id: &Pubkey, accounts: &[AccountInfo]) -> ProgramResult {
+    // Handles vault creation and initializing mint accounts
+}
+```
+
+### Depositing Tokens
+
+Depositing tokens into a vault locks the tokens in the system. The **Deposit** instruction moves tokens from the user’s wallet to the vault, ensuring the correct amount is recorded on-chain.
+
+```text title="process_deposit"
+fn process_deposit(program_id: &Pubkey, accounts: &[AccountInfo], amount: u64) -> ProgramResult {
+    // Handles transferring tokens from the user's account to the vault
+}
+```
+
+This handler checks that the token accounts are valid, transfers tokens, and updates the vault's balance accordingly.
+
+### Withdrawing Tokens
+
+The withdrawal process works in reverse of depositing, allowing users to remove tokens from their vault. This function ensures the user has the correct balance in the vault before permitting the withdrawal.
+
+```text title="process_withdraw"
+fn process_withdraw(program_id: &Pubkey, accounts: &[AccountInfo], amount: u64) -> ProgramResult {
+    // Handles transferring tokens from the vault back to the user’s account
+}
+```
+
+### Burning RTokens
+
+Burning tokens is a critical function in the lifecycle of the vault. It allows users to reduce their vault holdings by removing tokens from circulation.
+
+```text title="process_burn_rtoken"
+fn process_burn_rtoken(program_id: &Pubkey, accounts: &[AccountInfo], amount: u64) -> ProgramResult {
+    // Handles the burning of RTokens, removing them from the vault system
+}
+```
+
+## Instruction Flow and Safety
+
+Each instruction ensures safety and validity through:
+- **Account Ownership Validation**: Ensures the user initiating the instruction is the rightful owner.
+- **Rent Exemption Checks**: Ensures accounts are rent-exempt as required by Solana protocols.
+- **Token Validations**: Ensures that token mints and associated accounts are correctly configured for each action.
+
+The design of the instruction processor ensures all interactions with vaults follow a strict, secure flow, preventing unauthorized access or unintended actions.
+
+---
+
+The **Vault Processors** manage the core functionalities of our vault system, ensuring the correct instructions are routed, processed, and validated, maintaining the integrity and safety of the token management system.

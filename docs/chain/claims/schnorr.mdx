@@ -1,0 +1,48 @@
+---
+sidebar_position: 1
+---
+
+# Schnorr Signature Claims
+
+## Verifying Schnorr Signature Claims in Rugsafe
+
+Schnorr signature claims provide a secure and efficient method of verifying ownership or access to certain components of an intent. In Rugsafe, Schnorr signatures are used within claim components to prove that a user has the right to claim a component.
+
+### How Schnorr Signatures Work
+
+Schnorr signatures rely on elliptic curve cryptography to create a compact and efficient signature. In the Rugsafe chain, claimants use Schnorr signatures to prove ownership or access to a component within an intent.
+
+The process involves validating the claimant's public key, signature, and the message they are signing.
+
+```go
+func (k Keeper) processSchnorrClaim(ctx context.Context, claim *types.MsgClaimRequest_SchnorrClaim, will *types.Will, componentIndex int) error {
+    // Unmarshal the public key and signature
+    publicKeyBytes, _ := hex.DecodeString(string(claim.SchnorrClaim.PublicKey))
+    signatureBytes, _ := hex.DecodeString(string(claim.SchnorrClaim.Signature))
+
+    // Hash the message
+    message := claim.SchnorrClaim.Message
+    messageScalar := schnorr.Hash(string(message) + string(hex.EncodeToString(publicKeyBytes)))
+
+    // Construct the Schnorr signature
+    schnorrSignature := schnorr.Signature{R: r, S: s}
+
+    // Verify the Schnorr signature
+    if !schnorr.Verify(messageScalar, schnorrSignature, publicKeyPoint) {
+        return fmt.Errorf("schnorr signature verification failed")
+    }
+
+    // Mark the component as claimed
+    will.Components[componentIndex].Status = "claimed"
+    return k.updateWillStatusAndStore(ctx, will, componentIndex)
+}
+```
+
+### The Signature Verification Process
+
+1. **Unmarshalling the Public Key and Signature**: The public key and signature are decoded from the claimant's request and converted into the required format for verification.
+2. **Message Hashing**: The message is hashed using the Schnorr signature algorithm.
+3. **Signature Verification**: The Schnorr signature is verified using the public key, the message hash, and the signature itself.
+4. **Claiming the Component**: If the signature is valid, the intent's component is marked as claimed.
+
+By utilizing Schnorr signatures, Rugsafe ensures that claimants can securely prove their access to specific components of an intent.

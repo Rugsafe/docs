@@ -1,0 +1,53 @@
+---
+sidebar_position: 2
+---
+
+# Key Concepts
+
+In Rugsafe's chain, the core concept revolves around **intents** (formerly referred to as wills). These intents are predefined actions, such as token transfers or contract executions, set to execute under specific conditions. Understanding the structure and components of these intents is crucial for navigating and using Rugsafe’s chain effectively.
+
+## What Are Intents (Formerly Wills)?
+
+Intents are on-chain objects representing actions to be carried out when certain conditions are met. These actions can include, but are not limited to:
+- **Asset transfers**
+- **Contract executions**
+- **Cross-chain IBC messages**
+- **Claims on specific components**
+
+In the previous iteration known as Willchain, these actions were referred to as "wills." As the platform evolved, the term "wills" was replaced by "intents" to better reflect their programmable and flexible nature.
+
+### Core Characteristics of Intents:
+- **Predefined Execution**: Intents define actions that will execute based on a set of conditions (e.g., reaching a specific block height).
+- **Autonomy**: Once set, intents operate autonomously, ensuring decentralized, trustless execution without human intervention.
+- **Modularity**: Intents are made up of components, each representing a specific action or function to be carried out.
+
+## Execution and Claiming of Intents
+
+The execution of an intent follows a lifecycle that can include setting it up, executing it based on conditions, and even allowing users to claim parts of the intent’s result.
+
+- **Execution**: When the conditions for an intent are met, the **Will (Intent) Module** handles its execution. This can involve transferring assets, executing a contract, or sending an IBC message.
+  
+- **Claiming**: Certain components within an intent can be claimed by a specified beneficiary. For example, an intent might contain a token transfer that only the intended recipient can claim.
+
+## Intent Components: Execution, Transfer, IBC, and Contract Components
+
+Intents are composed of various **components** that define the specific actions to be carried out. These components include:
+
+### 1. **Execution Components**
+Execution components define logic or actions that will be carried out autonomously. This can involve token transfers, smart contract calls, or even sending IBC messages across chains.
+
+### 2. **Transfer Components**
+Transfer components handle the movement of assets, such as sending tokens from the creator of the intent to the intended beneficiary.
+
+### 3. **IBC Components**
+IBC (Inter-Blockchain Communication) components handle cross-chain interactions, enabling actions like token transfers or message passing between different blockchain networks.
+
+### 4. **Contract Components**
+Contract components allow Wasm contracts to be executed as part of the intent. This adds programmable flexibility to intents, enabling developers to define custom logic that will run automatically.
+
+Each of these components can be claimed and executed according to the predefined rules set in the intent.
+
+## Summary
+
+Understanding intents and their components is central to working with Rugsafe’s chain. Intents are built with modular components that define various actions, which are executed once conditions are met. This system provides a robust, autonomous way to manage complex workflows on-chain, including cross-chain interactions through IBC.
+

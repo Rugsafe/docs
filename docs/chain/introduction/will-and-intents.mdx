@@ -1,0 +1,51 @@
+---
+sidebar_position: 3
+---
+
+# The Will (Intent) Module Overview
+
+The **Will (Intent) Module** is at the core of Rugsafe’s chain, managing the creation, execution, and claiming of intents. This module allows for decentralized and trustless execution of predefined actions (intents) on the blockchain.
+
+## Introduction to the Will Module
+
+Originally built as part of the research project "Willchain," this module was designed to enable users to create, manage, and execute **intents** (formerly known as "wills"). Each intent specifies actions that should take place once a set of conditions, such as reaching a particular block height, are met. 
+
+In Rugsafe’s chain, this module provides:
+- **Intent Creation**: Users can create intents by defining specific actions (e.g., asset transfers, contract executions, IBC messages) that will be executed at a future time.
+- **Component Management**: The intent is composed of various components, each representing a different action to be carried out.
+- **Autonomous Execution**: Once an intent is created, it operates autonomously and cannot be altered, ensuring trustless execution.
+
+## Key Functionality
+
+The Will (Intent) Module provides several key functionalities:
+
+1. **Managing Intents**: The primary role of the module is to allow users to create and manage intents. Each intent is securely stored and governed on-chain.
+   
+2. **Execution of Components**: Intents consist of different components that are executed either upon expiration or when certain conditions are met. These components handle tasks such as token transfers, contract executions, and IBC messages.
+
+3. **Claiming**: The module allows for specific components within an intent to be claimed by a designated party, such as a beneficiary of a token transfer or a recipient of contract execution results.
+
+4. **Expiration and Block Height Triggers**: Intents can have expiration times based on block height, after which the components are automatically executed.
+
+## High-Level Architecture
+
+The Will (Intent) Module is integrated with the broader Cosmos SDK architecture and leverages the power of Wasm (WebAssembly) contracts for added flexibility and security. 
+
+Key architectural features include:
+- **Cosmos SDK**: The foundation of the chain, providing essential blockchain infrastructure and handling modules.
+- **Wasm Integration**: Wasm contracts are used to handle custom logic and executions tied to intents. This gives developers the ability to define and execute programmable contracts within intents.
+- **KV Store**: The intents are stored in the key-value (KV) store, ensuring that they are persistent and available for execution once the conditions are met.
+
+## Role of the Will Module in Managing Intents
+
+The Will Module plays a central role in managing all aspects of intent creation, execution, and claiming:
+
+- **CreateWill (Intent Creation)**: Users submit a transaction to create an intent. This transaction specifies the actions (components) and the conditions under which they will be executed.
+- **Component Handling**: Each intent is composed of components that define the specific actions to be taken (e.g., transfer tokens, call a contract, or send an IBC message).
+- **Execution**: When the conditions for the intent are met (e.g., reaching a specific block height), the module autonomously executes the components.
+- **Claiming**: If an intent contains components that can be claimed, such as a token transfer, designated recipients can claim these components after the intent is executed.
+
+## Summary
+
+The Will (Intent) Module is the backbone of Rugsafe’s decentralized intent management system. It allows users to define actions that will be executed under specific conditions, ensuring trustless and autonomous execution. The module integrates seamlessly with Cosmos SDK and Wasm contracts, providing robust functionality for managing intents across different components and chains.
+

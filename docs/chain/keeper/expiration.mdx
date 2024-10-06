@@ -1,0 +1,59 @@
+---
+sidebar_position: 3
+---
+
+# Expiration and Execution
+
+## How Intents Expire and Execute
+
+Intents on the Rugsafe chain are set to expire and execute at predefined block heights. The Keeper plays a critical role in monitoring these heights and ensuring that intents are executed or marked as expired.
+
+### Expiration of Intents
+
+Intents are created with an expiration block height. As blocks are processed, the BeginBlocker function checks if any intents have reached or surpassed their expiration block height, marking them as expired.
+
+```go
+func (k *Keeper) BeginBlocker(ctx sdk.Context) error {
+    blockHeight := ctx.BlockHeight()
+
+    // Fetch intents that are set to expire at this block height
+    willIDsBz, err := store.Get([]byte(heightKey))
+    if err != nil || willIDsBz == nil {
+        return nil // No intents to process for this block height
+    }
+
+    ...
+}
+```
+
+### Executing Intents at Expiration
+
+When an intent reaches its target block height, the `BeginBlocker` function ensures that all the components of the intent are executed. Execution components such as token transfers, contract calls, and IBC sends are handled individually.
+
+```go
+for _, willID := range willIds.Ids {
+    will, err := k.GetWillByID(ctx, willID)
+    if err != nil {
+        continue
+    }
+
+    // Execute the intent's components
+    for component_index, component := range will.Components {
+        switch c := component.ComponentType.(type) {
+        case *types.ExecutionComponent_Transfer:
+            k.ExecuteTransfer(ctx, component, *will)
+        case *types.ExecutionComponent_Contract:
+            _, err := k.ExecuteContract(ctx, c, will.Creator)
+            ...
+        case *types.ExecutionComponent_IbcMsg:
+            k.SendIBCMessage(sdk.UnwrapSDKContext(ctx), component, *will)
+        ...
+        }
+    }
+
+    will.Status = "expired"
+    ...
+}
+```
+
+By processing intents at the specified block height, Rugsafe ensures that each intent is securely executed according to its components.

@@ -1,0 +1,111 @@
+---
+sidebar_position: 4
+---
+
+# Vault Serialization & Deserialization
+
+Serialization and deserialization are essential operations in our Solana vault system. These processes allow data, such as vault details and registry information, to be stored on-chain and retrieved later in its original form. This section dives into how vaults and vault registries are serialized and deserialized for storage and interaction on the Solana blockchain.
+
+## Why Serialization?
+
+Solana accounts store data in byte format, so we must convert complex structures like **Vault** and **VaultRegistry** into byte arrays for efficient storage. Serialization ensures that our vault data is converted into a form that can be saved within Solana’s account storage, while deserialization restores that data into its original structure when retrieved.
+
+### Vault Serialization
+
+The **Vault** structure holds important details like the vault account, token mints, and ownership. To store this data on-chain, we serialize it into a byte array.
+
+```text title="Vault Serialization"
+pub fn serialize(&self) -> Vec<u8> {
+    let mut data = Vec::with_capacity(Self::LEN);
+    data.extend_from_slice(self.vault_account.as_ref());
+    data.extend_from_slice(self.mint_token_a.as_ref());
+    data.extend_from_slice(self.mint_a_token_a.as_ref());
+    data.extend_from_slice(self.owner.as_ref());
+    data
+}
+```
+
+Here, each piece of data in the vault (public keys and owner information) is converted into bytes and packed into a vector. This vector is then stored on-chain, allowing the vault state to be saved securely.
+
+### Vault Deserialization
+
+When vault data is retrieved from Solana’s storage, it must be deserialized back into a **Vault** structure. Deserialization converts the byte array back into its original form.
+
+```text title="Vault Deserialization"
+pub fn deserialize(input: &[u8]) -> Self {
+    let vault_account = Pubkey::new_from_array(input[0..32].try_into().unwrap());
+    let mint_token_a = Pubkey::new_from_array(input[32..64].try_into().unwrap());
+    let mint_a_token_a = Pubkey::new_from_array(input[64..96].try_into().unwrap());
+    let owner = Pubkey::new_from_array(input[96..128].try_into().unwrap());
+
+    Vault {
+        vault_account,
+        mint_token_a,
+        mint_a_token_a,
+        owner,
+    }
+}
+```
+
+This function extracts each field (such as the vault account and token mints) from the input byte array and reconstructs the **Vault** structure.
+
+## VaultRegistry Serialization
+
+The **VaultRegistry** is responsible for managing multiple vaults in the system. Similar to individual vaults, it must also be serialized to ensure the list of vaults is stored correctly on-chain.
+
+```text title="VaultRegistry Serialization"
+pub fn serialize(&self) -> Vec<u8> {
+    let mut data = Vec::with_capacity(self.len());
+    let vaults_len = self.vaults.len() as u64;
+    data.extend_from_slice(&vaults_len.to_le_bytes());
+    data.extend_from_slice(&(self.capacity as u64).to_le_bytes());
+
+    for vault in &self.vaults {
+        data.extend_from_slice(&vault.serialize());
+    }
+
+    // Pad the remaining space with zeros
+    data.resize(self.len(), 0);
+
+    data
+}
+```
+
+The **VaultRegistry** serialization includes the number of vaults, the capacity of the registry, and the serialized data of each individual vault. This ensures that the entire registry can be saved and managed on-chain.
+
+## VaultRegistry Deserialization
+
+When reading data from Solana’s account storage, we deserialize it back into a **VaultRegistry**. This ensures that we can manage and interact with the vaults in their original structure.
+
+```text title="VaultRegistry Deserialization"
+pub fn deserialize(input: &[u8]) -> Result<Self, &'static str> {
+    if input.len() < 16 {
+        return Err("Input data is too short for deserialization");
+    }
+
+    let (len_bytes, rest) = input.split_at(8);
+    let vaults_len = u64::from_le_bytes(len_bytes.try_into().unwrap()) as usize;
+
+    let (capacity_bytes, mut rest) = rest.split_at(8);
+    let capacity = u64::from_le_bytes(capacity_bytes.try_into().unwrap()) as usize;
+
+    if vaults_len > capacity {
+        return Err("Invalid data: vault count exceeds capacity");
+    }
+
+    let mut vaults = Vec::with_capacity(vaults_len);
+    for _ in 0..vaults_len {
+        let (vault_bytes, remaining) = rest.split_at(Vault::LEN);
+        vaults.push(Vault::deserialize(vault_bytes));
+        rest = remaining;
+    }
+
+    Ok(VaultRegistry { vaults, capacity })
+}
+```
+
+This function reconstructs the **VaultRegistry** from the byte array, reloading the vault count, capacity, and each individual vault stored within the registry.
+
+## Summary
+
+Serialization and deserialization are vital processes for storing and retrieving on-chain data in the Solana blockchain. By converting complex data structures like **Vault** and **VaultRegistry** into byte arrays, we ensure that all vault-related information is safely stored and can be retrieved as needed, ensuring smooth interaction and

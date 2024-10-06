@@ -1,0 +1,79 @@
+---
+sidebar_position: 1
+---
+
+# MsgServer Overview
+
+The MsgServer in the Rugsafe Chain is responsible for handling incoming transactions and routing them to the appropriate keeper functions. The MsgServer essentially acts as the gateway through which messages such as creating intents, claiming components, or executing checks are processed. Each message type is associated with a specific handler function.
+
+## Message Routing
+
+The MsgServer routes incoming messages based on the message type. Each function in the MsgServer is designed to take a message request and delegate it to the appropriate keeper logic.
+
+For example, the `CreateWill` function handles the creation of new intents, while `Claim` handles claims against existing intents.
+
+### MsgServer Implementation
+
+Here is a highlight of the message routing structure:
+
+```go
+type msgServer struct {
+    keeper IKeeper
+}
+
+func NewMsgServerImpl(k IKeeper) types.MsgServer {
+    return &msgServer{keeper: k}
+}
+```
+
+In the `CreateWill` message, the MsgServer ensures the intent is created properly by routing the message to the `CreateWill` keeper function. If successful, it returns a response containing the ID and metadata of the newly created intent.
+
+```go
+func (m msgServer) CreateWill(
+    ctx context.Context,
+    msg *types.MsgCreateWillRequest,
+) (*types.MsgCreateWillResponse, error) {
+    will, err := m.keeper.CreateWill(ctx, msg)
+    if err != nil {
+        return nil, err
+    }
+    return &types.MsgCreateWillResponse{
+        Id:          will.ID,
+        Creator:     msg.GetCreator(),
+        Beneficiary: will.Beneficiary,
+        Height:      will.Height,
+    }, nil
+}
+```
+
+Similarly, the `Claim` function verifies that the claim is legitimate and processes it by invoking the `Claim` keeper function.
+
+```go
+func (m msgServer) Claim(
+    ctx context.Context,
+    msg *types.MsgClaimRequest,
+) (*types.MsgClaimResponse, error) {
+    err := m.keeper.Claim(ctx, msg)
+    if err != nil {
+        return nil, errors.Wrap(err, "upon claiming will component")
+    }
+    return &types.MsgClaimResponse{
+        Success: true,
+        Message: "Claim processed successfully",
+    }, nil
+}
+```
+
+### Transaction Flow
+
+The MsgServer interacts closely with the keeper to perform the underlying operations. Here's the high-level flow:
+1. A message is sent to the chain.
+2. The MsgServer processes the message based on its type.
+3. The message is routed to the corresponding keeper function for execution.
+4. A response is generated and returned.
+
+MsgServer plays a crucial role in abstracting message handling logic and ensuring all transactions are properly routed and executed.
+
+```tip
+Always ensure that the MsgServer routes to valid and verified functions in the keeper to maintain security and integrity in the chain.
+```

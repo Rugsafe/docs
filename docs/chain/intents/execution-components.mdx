@@ -1,0 +1,55 @@
+---
+sidebar_position: 1
+---
+
+# Execution Components
+
+## Execution Process
+
+In the Rugsafe chain, execution components trigger when an intent reaches the target block height. These components are predefined actions within the will (intent) that must occur once the will is executed.
+
+Once the target height is reached, the BeginBlocker function processes these components. Based on the component type, different actions are taken, such as token transfers, contract calls, and IBC sends.
+
+### Example: Token Transfers
+
+In the case of a transfer component, the system parses the component and executes the transfer of tokens from the creator to the beneficiary. This happens automatically when the will is executed, ensuring a seamless token distribution process.
+
+```go
+func (k Keeper) ExecuteTransfer(ctx sdk.Context, component *types.ExecutionComponent, will types.Will) error {
+    coins := sdk.NewCoins(*component.Transfer.Amount)
+
+    fromAddr, err := sdk.AccAddressFromBech32(will.Creator)
+    toAddr, err := sdk.AccAddressFromBech32(component.Transfer.To)
+
+    if err := k.bankKeeper.SendCoins(ctx, fromAddr, toAddr, coins); err != nil {
+        return fmt.Errorf("failed to send coins: %w", err)
+    }
+    return nil
+}
+```
+
+### Contract Calls
+
+For contract call components, the stored contract address and message data are used to invoke the contract. This allows executing custom logic as part of the intent’s lifecycle, like invoking a smart contract after an expiration.
+
+```go
+func (k Keeper) ExecuteContract(ctx sdk.Context, c *types.ExecutionComponent_Contract, caller string) ([]byte, error) {
+    msg := c.Contract.Data
+    contractAddr, err := sdk.AccAddressFromBech32(c.Contract.Address)
+
+    return k.permissionedWasmKeeper.Execute(ctx, contractAddr, callerAddr, msg, coins)
+}
+```
+
+### IBC Sends
+
+In the case of IBC messages, the will can also include an interchain message that sends a packet to another chain.
+
+```go
+func (k *Keeper) SendIBCMessage(ctx sdk.Context, component *types.ExecutionComponent, will types.Will) error {
+    packet := channeltypes.NewPacket(data, sequence, "will", channelID, portID, channelID, timeoutHeight, timeoutTimestamp)
+    return k.GetChannelKeeper().SendPacket(ctx, channelCap, portID, channelID, timeoutHeight, timeoutTimestamp, packet.GetData())
+}
+```
+
+The logic behind these execution components ensures that the wills (intents) are fulfilled in a decentralized, trustless manner, allowing for token transfers, contract calls, and cross-chain communications.

@@ -1,0 +1,39 @@
+---
+sidebar_position: 2
+---
+
+# Transfer Components
+
+## How Token Transfers Are Structured Within Intents
+
+Transfer components are used to define token movements within an intent (will). They specify the sender, recipient, and the amount of tokens to be transferred when the will is executed.
+
+### Structure of a Transfer Component
+
+The key attributes for a transfer component include:
+- **From**: The address of the sender (usually the creator of the will).
+- **To**: The address of the recipient (beneficiary of the will).
+- **Amount**: The specific token amount to transfer.
+
+The intent specifies these fields upon creation and stores them in the will’s components.
+
+### Example: Transferring Tokens to a Beneficiary
+
+When the will is executed, the system checks for any transfer components and proceeds to move tokens accordingly. This occurs automatically based on the logic in the `ExecuteTransfer` function within the keeper.
+
+```go
+func (k *Keeper) ExecuteTransfer(ctx sdk.Context, component *types.ExecutionComponent, will types.Will) error {
+    coins := sdk.NewCoins(*component.Transfer.Amount)
+
+    fromAddr, err := sdk.AccAddressFromBech32(will.Creator)
+    toAddr, err := sdk.AccAddressFromBech32(component.Transfer.To)
+
+    if err := k.bankKeeper.SendCoins(ctx, fromAddr, toAddr, coins); err != nil {
+        return fmt.Errorf("failed to send coins: %w", err)
+    }
+    return nil
+}
+```
+
+This process ensures that token transfers occur seamlessly as part of the execution of the will, eliminating the need for manual intervention.
+

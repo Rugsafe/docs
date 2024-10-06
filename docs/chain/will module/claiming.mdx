@@ -1,0 +1,90 @@
+---
+sidebar_position: 4
+---
+
+# Claiming
+
+Claiming components in an intent occurs when a user asserts their rights over the components within an intent after it has expired. Different claim types are supported in Rugsafe’s chain, and verification methods ensure only authorized users can claim these components.
+
+## Process for Claiming Components
+
+When an intent expires, its claimable components are marked as "active." Users can then submit claims to execute these components. Each claim undergoes verification based on the claim type, such as Schnorr signatures, Pedersen commitments, or Gnark-based proofs.
+
+Here’s how the claim process is initiated:
+
+```go
+case *types.ExecutionComponent_Claim:
+    component.Status = "active"
+    // Now the component can be claimed
+```
+
+Once the component is active, users can submit a claim via the `Claim` function. 
+
+### Verification Methods
+
+The verification process is integral to ensure that only authorized users can claim components. Depending on the claim type, different verification methods are applied.
+
+#### Schnorr Signature Claims
+
+Schnorr signature claims are verified using the public key and signature provided in the claim:
+
+```go
+switch claim := msg.ClaimType.(type) {
+case *types.MsgClaimRequest_SchnorrClaim:
+    k.processSchnorrClaim(ctx, claim, will, componentIndex)
+}
+```
+
+The Schnorr signature verification involves checking the public key, message, and signature:
+
+```go
+if !schnorr.Verify(messageScalar, schnorrSignature, publicKeyPoint) {
+    return fmt.Errorf("schnorr signature verification failed")
+}
+```
+
+#### Pedersen Commitment Claims
+
+Pedersen commitments are another type of claim. The system ensures that the claim matches the stored commitments:
+
+```go
+case *types.MsgClaimRequest_PedersenClaim:
+    k.processPedersenClaim(ctx, will, componentIndex, claim)
+```
+
+In `processPedersenClaim`, commitments are deserialized, added together, and checked:
+
+```go
+if !resultCommitment.Equals(&targetCommitmentPoint) {
+    return fmt.Errorf("commitment verification failed")
+}
+```
+
+#### Gnark Claims
+
+Gnark-based claims use zk-SNARK proofs for verification. While the current implementation provides a placeholder, this will expand to support full zk-SNARK claim verification:
+
+```go
+case *types.MsgClaimRequest_GnarkClaim:
+    // Gnark claim processing
+    fmt.Println("Processing Gnark claim with proof:", claim.GnarkClaim.Proof)
+```
+
+### Access Control and Verification
+
+Access control ensures that only authorized users can claim a component. The `AccessHandler` checks the component's access settings, such as public or private access:
+
+```go
+switch acc := access.AccessType.(type) {
+case *types.ClaimAccessControl_Public:
+    // Public claims, anyone can claim
+case *types.ClaimAccessControl_Private:
+    // Private claims, check if the claimer is authorized
+}
+```
+
+This verification ensures secure and authorized access to intent components.
+
+## Summary
+
+The process of claiming components within intents provides flexibility and security. Rugsafe supports multiple claim verification types, including Schnorr signatures, Pedersen commitments, and future integration of Gnark proofs. Access control ensures that only rightful claimants can execute components in expired intents, providing a robust and decentralized approach to managing claims.

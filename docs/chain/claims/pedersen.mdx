@@ -1,0 +1,52 @@
+---
+sidebar_position: 2
+---
+
+# Pedersen Commitment Claims
+
+## Overview of Pedersen Commitments in Rugsafe
+
+Pedersen commitments provide a cryptographic mechanism for committing to a value while keeping it hidden. Rugsafe uses Pedersen commitments within claim components to ensure that the value being claimed is valid without revealing sensitive information.
+
+### How Pedersen Commitments Work
+
+In Rugsafe, Pedersen commitments allow claimants to provide proof that they possess a valid commitment without revealing the underlying value. This makes the system highly secure and privacy-preserving.
+
+### Verifying Pedersen Commitments
+
+When a claimant submits a Pedersen commitment, Rugsafe verifies the commitment by comparing it with the stored commitment in the intent. The verification involves adding the provided commitment to the stored commitment and checking if the result matches the expected value.
+
+```go
+func (k Keeper) processPedersenClaim(ctx context.Context, will *types.Will, componentIndex int, claim *types.MsgClaimRequest_PedersenClaim) error {
+    // Deserialize stored commitment
+    storedCommitmentPoint, err := k.DeserializeCommitment(storedCommitment.Commitment)
+    if err != nil {
+        return fmt.Errorf("failed to deserialize stored commitment: %v", err)
+    }
+
+    // Deserialize claim commitment
+    claimCommitmentPoint, err := k.DeserializeCommitment(claim.PedersenClaim.Commitment)
+    if err != nil {
+        return fmt.Errorf("failed to deserialize claimed commitment: %v", err)
+    }
+
+    // Add commitments and check against the target
+    resultCommitment := k.AddCommitments(storedCommitmentPoint, claimCommitmentPoint)
+    if !resultCommitment.Equals(&targetCommitmentPoint) {
+        return fmt.Errorf("commitment verification failed")
+    }
+
+    // Mark the component as claimed
+    will.Components[componentIndex].Status = "claimed"
+    return k.updateWillStatusAndStore(ctx, will, componentIndex)
+}
+```
+
+### The Commitment Verification Process
+
+1. **Deserialize Stored Commitment**: The stored Pedersen commitment is deserialized and used as a reference for verification.
+2. **Add Commitments**: The claimant's commitment is added to the stored commitment to form a result.
+3. **Verify Commitment**: The result is compared with the expected target commitment to ensure correctness.
+4. **Claiming the Component**: If the verification succeeds, the component is marked as claimed.
+
+Pedersen commitments provide an essential layer of privacy, ensuring that the claim can be validated without exposing sensitive data.

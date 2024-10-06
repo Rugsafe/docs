@@ -1,0 +1,79 @@
+---
+sidebar_position: 2
+---
+
+# Message Types
+
+In Rugsafe's chain, several message types are used to interact with the will (intent) module. These messages allow the creation, claiming, and checking of intents. Each message type serves a specific purpose within the lifecycle of an intent.
+
+## MsgCreateWill
+
+This message is used to create new wills (intents) on the chain. It contains all necessary parameters, such as the creator, beneficiary, and components.
+
+### MsgCreateWill Request Structure
+
+The `MsgCreateWillRequest` contains essential information for creating a will:
+
+```go
+type MsgCreateWillRequest struct {
+    Creator     string
+    Name        string
+    Beneficiary string
+    Height      int64
+    Components  []*ExecutionComponent
+}
+```
+
+Once submitted, the message is handled by the `CreateWill` function, which processes the request:
+
+```go
+func (m msgServer) CreateWill(ctx context.Context, msg *types.MsgCreateWillRequest) (*types.MsgCreateWillResponse, error) {
+    will, err := m.keeper.CreateWill(ctx, msg)
+    return &types.MsgCreateWillResponse{Id: will.ID, ...}, nil
+}
+```
+
+## MsgClaim
+
+This message allows a user to claim a specific component within a will after the will has expired. The message includes the will ID and component ID to ensure that only valid components are claimed.
+
+### MsgClaim Request Structure
+
+The `MsgClaimRequest` includes the following fields:
+
+```go
+type MsgClaimRequest struct {
+    WillId      string
+    ComponentId string
+    Claimer     string
+    ClaimType   isMsgClaimRequest_ClaimType
+}
+```
+
+The `Claim` function processes the claim by verifying the component and executing the necessary logic:
+
+```go
+func (m msgServer) Claim(ctx context.Context, msg *types.MsgClaimRequest) (*types.MsgClaimResponse, error) {
+    err := m.keeper.Claim(ctx, msg)
+    return &types.MsgClaimResponse{Success: true}, nil
+}
+```
+
+## MsgCheckIn
+
+The `MsgCheckIn` message is a placeholder for future functionality. This allows the creator to reset the block height.
+
+### MsgCheckIn Request Structure
+
+The current implementation is here:
+
+```go
+func (m msgServer) CheckIn(ctx context.Context, msg *types.MsgCheckInRequest) (*types.MsgCheckInResponse, error) {
+    ...
+    return &types.MsgCheckInResponse{}, nil
+}
+```
+
+## Conclusion
+
+These message types form the backbone of interactions with Rugsafe’s will (intent) module. Whether creating new wills, claiming components, or checking in for future purposes, each message serves a critical role in managing intents on the blockchain.

@@ -1,0 +1,153 @@
+---
+sidebar_position: 3
+---
+
+# Managing Positions
+
+In perpetual contracts, positions represent a user's leveraged stake in a market. The **Processor** in Solana handles the lifecycle of these positions through various instructions, such as opening, adding collateral, removing collateral, and ultimately closing or liquidating positions. Let's break down the key operations involved.
+
+## Opening a Position
+
+When a user opens a position, several important tasks are performed, including:
+
+- Creating the **user positions** account (PDA) if it doesn't already exist.
+- Creating the **custody account** for holding collateral.
+- Storing the position in a **position PDA** that is specific to the user and position index.
+
+This process ensures that every position is securely managed and tracked on-chain.
+
+```rust title="Open Position Instruction"
+match instruction {
+    PerpetualsInstruction::OpenPosition { side, amount } => {
+        Self::process_open_position(program_id, accounts, side, amount)
+    }
+}
+```
+
+### Key Accounts for Opening a Position
+
+The process requires several accounts, including:
+
+- **Payer Account**: The user who opens the position, providing collateral.
+- **User Positions Account (PDA)**: Keeps track of the user's positions.
+- **Custody Account (PDA)**: Holds the collateral securely.
+- **Collateral Mint Account**: The mint for the collateral token.
+- **Position Account (PDA)**: Stores data about the specific position.
+
+### Custody Account
+
+The custody account is where collateral is stored. If the custody account does not already exist, it is created and initialized:
+
+```text title="Custody Account Creation"
+if custody_account.lamports() == 0 {
+    invoke_signed(
+        &solana_program::system_instruction::create_account(
+            payer_account.key,
+            custody_account.key,
+            required_lamports,
+            spl_token::state::Account::LEN as u64,
+            &spl_token::id(),
+        ),
+        &[payer_account.clone(), custody_account.clone(), system_program.clone()],
+        &[&[b"custody", payer_account.key.as_ref(), &[custody_bump]]],
+    )?;
+}
+```
+
+The **custody account** is created using the system instruction, and the program's PDA is used as the authority for this account. This ensures that collateral is securely held by the program itself.
+
+### Position PDA
+
+Each position is identified by a **PDA (Program-Derived Address)**, which is derived based on the user's public key and the index of the position in their user positions account. This ensures that each position is unique:
+
+```text title="Position PDA Derivation"
+let (position_pda, position_bump) = Pubkey::find_program_address(
+    &[b"position", payer_account.key.as_ref(), &user_positions.next_position_idx.to_le_bytes()],
+    program_id,
+);
+```
+
+If the position account doesn't exist, it is created similarly to the custody account.
+
+### Storing the Position
+
+Once all accounts are set up, the position is stored on-chain. This involves serializing the **Position** struct and writing it to the position account:
+
+```text title="Position Struct Serialization"
+let position = Position {
+    owner: *payer_account.key,
+    side,
+    size_usd: amount,
+    open_time: Clock::get()?.unix_timestamp,
+    update_time: Clock::get()?.unix_timestamp,
+    ..Position::default()
+};
+
+let mut position_data = position_account.try_borrow_mut_data()?;
+position.serialize(&mut *position_data)?;
+```
+
+The position contains critical information, including the owner, side (long or short), size, and timestamps for when it was opened and last updated.
+
+### Collateral Transfer
+
+The final step in opening a position is transferring the collateral from the user's account to the custody account:
+
+```text title="Collateral Transfer"
+let transfer_ix = spl_token::instruction::transfer(
+    spl_account.key,
+    user_collateral_account.key,
+    custody_account.key,
+    payer_account.key,
+    &[],
+    amount,
+)?;
+
+invoke(
+    &transfer_ix,
+    &[
+        user_collateral_account.clone(),
+        custody_account.clone(),
+        payer_account.clone(),
+        spl_account.clone(),
+    ],
+)?;
+```
+
+This ensures that the user's collateral is safely transferred to the custody account, securing the position.
+
+## Adding Collateral
+
+Users can add more collateral to an existing position, which involves checking the position's validity and transferring additional collateral to the custody account:
+
+```text title="Add Collateral Instruction"
+PerpetualsInstruction::AddCollateral { position_id, amount } => {
+    Self::process_add_collateral(program_id, accounts, position_id, amount)
+}
+```
+
+## Removing Collateral
+
+Similarly, users can remove collateral from a position, provided that enough collateral remains to keep the position secure:
+
+```text title="Remove Collateral Instruction"
+PerpetualsInstruction::RemoveCollateral { position_id, amount } => {
+    Self::process_remove_collateral(program_id, accounts, position_id, amount)
+}
+```
+
+## Closing a Position
+
+When a user is ready to close their position, the position's collateral is returned, and the position data is cleared from the PDA:
+
+```text title="Close Position Instruction"
+PerpetualsInstruction::ClosePosition { position_id } => {
+    Self::process_close_position(program_id, accounts, position_id)
+}
+```
+
+Closing a position involves calculating profit or loss and adjusting the user's balance accordingly.
+
+## Summary
+
+Opening and managing positions in perpetual contracts requires precise handling of multiple accounts and secure custody of user collateral. The position lifecycle — from opening to closing — ensures that users can engage in leveraged trading while maintaining security and transparency.

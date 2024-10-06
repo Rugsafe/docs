@@ -1,0 +1,52 @@
+---
+sidebar_position: 3
+---
+
+# IBC Message Components
+
+## Overview of IBC Message Functionality
+
+IBC (Inter-Blockchain Communication) messages within the Intent (Will) Module allow for the execution of cross-chain transfers or communications. These messages are triggered as part of the will’s components, enabling decentralized applications (dApps) or token transfers to interact with other blockchains when the intent is executed.
+
+### Structuring IBC Components within Intents
+
+IBC components define the channel, port, and data to be sent across chains. They specify the target blockchain and the payload that should be delivered when the will is executed.
+
+- **Channel**: The IBC channel for sending the message.
+- **Port**: The IBC port used for communication.
+- **Data**: The data that will be sent to the target chain (for example, instructions or token details).
+
+### Example Use Case for IBC Message Passing
+
+In an intent, an IBC message could instruct another chain to perform specific actions, such as transferring assets or calling a contract. The IBC message is encapsulated in the intent and will be triggered once the execution conditions are met.
+
+```go
+func (k *Keeper) SendIBCMessage(ctx sdk.Context, component *types.ExecutionComponent, will types.Will) error {
+    var channelID, portID string
+    var data []byte
+
+    channelID = component.GetIbcMsg().Channel
+    portID = component.GetIbcMsg().PortId
+    data = component.GetIbcMsg().Data
+
+    sequence, found := k.GetChannelKeeper().GetNextSequenceSend(ctx, "will", channelID)
+    if !found {
+        return fmt.Errorf("sequence not found for channel")
+    }
+
+    timeoutHeight := clienttypes.NewHeight(0, 10000)
+    timeoutTimestamp := uint64(ctx.BlockTime().UnixNano()) + 100000000000
+
+    packet := channeltypes.NewPacket(data, sequence, "will", channelID, portID, channelID, timeoutHeight, timeoutTimestamp)
+    channelCap, ok := k.scopedKeeper.GetCapability(ctx, host.ChannelCapabilityPath("will", channelID))
+    
+    if !ok {
+        return fmt.Errorf("channel capability not found")
+    }
+
+    _, err := k.GetChannelKeeper().SendPacket(ctx, channelCap, portID, channelID, timeoutHeight, timeoutTimestamp, packet.GetData())
+    return err
+}
+```
+
+This function sends an IBC message when an IBC component of the will is triggered, allowing inter-chain actions to be executed.

@@ -1,0 +1,33 @@
+---
+sidebar_position: 1
+---
+
+# Vaults
+
+In our Solana protocol implementation, vaults are essential for managing tokens securely and efficiently. On the Solana blockchain, vaults interact with different aspects of the network to provide users with structured and reliable ways to store, deposit, and interact with their assets. Solana’s high throughput and low latency make it an excellent platform for such operations.
+
+## Core Components
+
+The creation and management of vaults involve several key components:
+
+- **Vault Account**: Each vault is associated with a specific account on the Solana network, where tokens are held and managed.
+- **Token Minting**: Our vaults leverage Solana’s token program to mint specific tokens that represent ownership or collateral within the vault system.
+- **State Management**: The vault system keeps track of the state of each vault, ensuring that vault creation, deposit, and withdrawal operations are executed correctly.
+
+## Interactions with the Solana Chain
+
+Each interaction with a vault—whether it’s creating one, depositing tokens, or withdrawing them—utilizes Solana’s infrastructure:
+
+- **Program Execution**: The program processes all instructions, such as creating a new vault or depositing assets, ensuring everything follows Solana’s rules for decentralized operations.
+- **Rent-Exemption**: Solana requires accounts to be rent-exempt. We ensure that each account related to vaults meets the rent-exemption requirement, securing the integrity of the vaults over time.
+
+## Scalability and Security
+
+One of the strengths of using Solana for vaults is its ability to handle large numbers of transactions while maintaining security. The **Vault Registry** allows us to manage and scale vault creation dynamically, while Solana’s security model ensures that only authorized users can interact with vaults.
+
+## What’s Next?
+
+In the upcoming sections, we will explore the core structures of the vaults, the processing of instructions, and how the vault system manages tokens and state effectively within the Solana ecosystem. 
+
+Next, we will help you understand the intricacies of vault management, token handling, and state serialization as we dive deeper into each aspect of our Solana-based vault system.
+
