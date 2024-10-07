@@ -32,7 +32,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Build the Next.js site
+      - name: Build the static site
         run: |
           echo "GITHUB_PAGES=true" >> $GITHUB_ENV
           yarn build

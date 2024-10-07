@@ -406,3 +406,117 @@ p {
   color: var(--ifm-color-secondary);
   opacity: 0.9;
 }
+
+.featuresSection {
+  padding: 20px 0;
+}
+
+.featureBox {
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.featureIcon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+/* Light mode styles */
+.light h3,
+.light p {
+  color: #000; /* Black text for light mode */
+}
+
+.light .featureBox {
+  background-color: #f9f9f9; /* Light background for boxes in light mode */
+}
+
+/* Dark mode styles */
+.dark h3,
+.dark p {
+  color: #fff; /* White text for dark mode */
+}
+
+.dark .featureBox {
+  background-color: #333; /* Dark background for boxes in dark mode */
+}
+
+.rugsafeHome {
+  padding: 40px;
+  text-align: left;
+  background-color: #f9f9f9; /* Light mode background */
+}
+
+.darkMode .rugsafeHome {
+  background-color: #333; /* Dark mode background */
+}
+
+.heroTitle {
+  color: #000; /* Default text color for light mode */
+}
+
+.darkMode .heroTitle {
+  color: #fff; /* Text color for dark mode */
+}
+
+.heroSubtitle {
+  color: #333; /* Darker text in light mode */
+}
+
+.darkMode .heroSubtitle {
+  color: #ccc; /* Lighter text for dark mode */
+}
+
+.heroDescription {
+  color: #555; /* Light mode description text */
+}
+
+.darkMode .heroDescription {
+  color: #bbb; /* Dark mode description text */
+}
+
+/* Button styles */
+.buttonPrimary {
+  background-color: #007bff; /* Light mode primary button color */
+  color: #fff; /* Light mode button text color */
+}
+
+.darkMode .buttonPrimary {
+  background-color: #555; /* Dark mode primary button color */
+  color: #fff; /* Dark mode button text color */
+}
+
+.buttonSecondary {
+  background-color: #f0f0f0; /* Light mode secondary button color */
+  color: #333; /* Light mode button text color */
+}
+
+.darkMode .buttonSecondary {
+  background-color: #444; /* Dark mode secondary button color */
+  color: #fff; /* Dark mode button text color */
+}
+
+.featuresRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.featureBox {
+  padding: 20px;
+  margin-bottom: 20px; /* Default margin for all feature boxes */
+}
+
+/* Adjustments for mobile screens */
+@media (max-width: 768px) {
+  .featureBox {
+    margin-bottom: 30px; /* Add extra space between boxes on mobile */
+  }
+  
+  /* Specific adjustment for the Community box */
+  .featureBox:last-child {
+    margin-bottom: 50px; /* Push down the last box (Community) more on mobile */
+  }
+}
