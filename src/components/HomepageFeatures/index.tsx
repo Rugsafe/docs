@@ -37,7 +37,7 @@ const FeatureList = [
     icon: '📊', // Bar chart icon to signify investment opportunities
     description: (
       <>
-        The protocol offers a comprehensive DeFi suite, enabling rugged token victims to recover assets and explore new opportunities for growth and investment.
+        The protocol offers a comprehensive DeFi suite, enabling rugged token victims to recover assets and explore new opportunities.
       </>
     ),
   },
