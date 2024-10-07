@@ -1,0 +1,42 @@
+---
+sidebar_position: 4
+---
+
+# Contract Call Components
+
+## Overview of Contract Call Functionality
+
+The Intent (Will) Module integrates smart contract calls into the execution process. This allows wills to execute contracts when specific conditions are met, such as a block height or an external trigger. Contracts can perform actions like transferring tokens, invoking other contracts, or executing more complex logic.
+
+### Handling Contract Calls Within Intents
+
+Each contract call component specifies the target contract address, the message to be sent, and any associated tokens. When an intent reaches execution, these components ensure that the contract call is dispatched as part of the will's lifecycle.
+
+- **Contract Address**: The destination address for the contract.
+- **Message**: The message that is sent to the contract (e.g., a method invocation).
+- **Coins**: Optional token transfer to the contract as part of the call.
+
+### Example: Contract Execution Logic
+
+When the intent reaches its execution block, the contract call is invoked.
+
+```go
+func (k Keeper) ExecuteContract(ctx sdk.Context, c *types.ExecutionComponent_Contract, caller string) ([]byte, error) {
+    // Prepare the message for the contract
+    msg := c.Contract.Data
+
+    ctxContext := sdk.UnwrapSDKContext(ctx)
+    coins := sdk.NewCoins()
+
+    contractAddr, err := sdk.AccAddressFromBech32(c.Contract.Address)
+    if err != nil {
+        return nil, fmt.Errorf("failed to parse contract address: %w", err)
+    }
+
+    ...
+
+    return k.permissionedWasmKeeper.Execute(ctxContext, contractAddr, callerAddr, msg, coins)
+}
+```
+
+This function ensures that when the intent reaches its target block, the contract is called with the specified message and tokens.

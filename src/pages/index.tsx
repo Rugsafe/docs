@@ -18,18 +18,17 @@ function HomepageHeader() {
         <div className={styles.heroText}>
           <h1 className={clsx(styles.heroTitle, colorMode === 'dark' && styles.darkMode)}>RugSafe</h1>
           <h2 className={clsx(styles.heroSubtitle, colorMode === 'dark' && styles.darkMode)}>
-            The first secure vault for<br />crypto trades
+            Solving the biggest Problem in Crypto
           </h2>
           <p className={clsx(styles.heroDescription, colorMode === 'dark' && styles.darkMode)}>
-            Rugsafe ensures your trades are secure by locking tokens in a
-            vault, so you never have to worry about sudden rug pulls again.
+            A Multichain Protocol for recovering from & defending against Rug Pulls
           </p>
           <div className={styles.heroButtons}>
-            <Link className={clsx(styles.buttonPrimary, colorMode === 'dark' && styles.darkMode)} to="/docs/intro">
-              Build whatever
+            <Link className={clsx(styles.buttonPrimary, colorMode === 'dark' && styles.darkMode)} to="https://rugsafe.io/assets/paper/rugsafe.pdf">
+              Read Paper
             </Link>
             <Link className={clsx(styles.buttonSecondary, colorMode === 'dark' && styles.darkMode)} to="/docs/intro">
-              Introduction
+              Documentation
             </Link>
           </div>
         </div>

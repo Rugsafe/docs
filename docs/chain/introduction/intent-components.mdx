@@ -1,0 +1,50 @@
+---
+sidebar_position: 5
+---
+
+# Intent Components
+
+An intent in Rugsafe’s chain is composed of multiple components that dictate its behavior and execution. These components allow for a wide variety of actions, from token transfers to contract calls, and even cross-chain messages through IBC. Understanding each component’s role is essential to grasp how intents operate within the chain.
+
+## Overview of Intent Components
+
+Each intent consists of one or more components that define what actions the intent will perform. Components can be executed individually or collectively, depending on the type of intent and its associated conditions.
+
+The key intent components are:
+
+- **Execution Components**: These components execute a specific action, such as transferring tokens or calling a smart contract.
+- **Transfer Components**: Handles the transfer of tokens from one address to another within the chain.
+- **IBC Components**: Used for sending IBC messages to communicate with other blockchains.
+- **Contract Call Components**: Executes smart contract logic using Wasm contracts.
+
+## Execution Components
+
+Execution components define the core actions that an intent will perform. These actions can be anything from transferring tokens to executing a contract call, and they are triggered either automatically or through a claim.
+
+- **Triggering Execution**: When the block height associated with the intent is reached, or a claim is made, the components are executed in order.
+- **Sequential Execution**: Components can be executed sequentially, ensuring that one action completes before the next one starts.
+
+## Transfer Components
+
+Transfer components handle the movement of assets (such as tokens) from one account to another. These are particularly useful for intents designed to distribute assets to multiple beneficiaries.
+
+- **Token Transfer**: Transfer components specify the token type, the amount, and the recipient address.
+- **Multi-Transfer Support**: An intent can include multiple transfer components, allowing for a single intent to distribute assets to several beneficiaries.
+
+## IBC Components
+
+Inter-Blockchain Communication (IBC) components enable intents to send messages across different blockchains. This makes it possible to execute cross-chain logic, such as transferring assets between chains or triggering actions on other blockchains.
+
+- **Cross-Chain Messages**: These components define the parameters for sending IBC messages, including the destination chain and the specific action to be triggered on the receiving end.
+- **IBC Channels**: IBC components work within the framework of IBC channels, which are established between chains to facilitate communication.
+
+## Contract Call Components
+
+Contract call components allow intents to interact with Wasm smart contracts. These components enable the execution of contract logic, allowing for more complex and programmable behavior within the intent.
+
+- **Wasm Contract Execution**: These components specify the contract address, the caller, and the message to be passed to the contract.
+- **Programmable Actions**: By leveraging contract call components, intents can perform highly customizable actions beyond simple token transfers or IBC messages.
+
+## Summary
+
+Intent components are the building blocks that define what an intent does and how it behaves on-chain. Whether it’s transferring tokens, calling a contract, or sending a message across chains, the flexible nature of these components makes intents a powerful tool in Rugsafe's decentralized logic.

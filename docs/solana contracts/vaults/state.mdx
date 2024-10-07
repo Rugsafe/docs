@@ -1,0 +1,83 @@
+---
+sidebar_position: 6
+---
+
+# State Management & Rent Handling
+
+In Solana, account state management and rent handling are critical to ensuring the proper functionality of smart contracts, including our vault system. This section focuses on how we manage state across vaults and registry accounts while ensuring rent exemption.
+
+## Account State Management
+
+Every account on Solana must maintain a certain amount of **state**. For our vault system, we manage two main types of accounts:
+
+1. **Vault Accounts**: Hold token data related to specific vaults.
+2. **State Accounts**: Store the serialized data for the entire vault registry.
+
+These accounts are managed by reading and writing serialized data into the accounts, allowing the vault system to persist its state on-chain.
+
+### Vault Registry State
+
+The **VaultRegistry** struct stores all vaults and is serialized into a **state account**. This allows the program to maintain a list of vaults and dynamically scale as the system grows.
+
+```text title="Vault Registry State"
+let mut vault_registry = VaultRegistry::new();
+let serialized_data = vault_registry.serialize();
+state_data[..serialized_data.len()].copy_from_slice(&serialized_data);
+```
+
+When a new vault is added, the state is updated and stored back into the account. This process is repeated for any interactions that modify the state, such as creating vaults or removing them.
+
+### Rent-Exemption
+
+On Solana, accounts need to be **rent-exempt** to prevent their data from being deleted due to insufficient balance. In our vault system, we ensure rent exemption during account creation and initialization.
+
+```text title="Rent Exemption Check"
+let rent = &Rent::from_account_info(rent_account)?;
+if !rent.is_exempt(payer_account.lamports(), Mint::LEN) {
+    return Err(ProgramError::AccountNotRentExempt);
+}
+```
+
+This ensures that the account has enough lamports (the Solana token) to be rent-exempt, meaning that it can persist on-chain without worrying about data loss.
+
+### Minimum Balance Calculation
+
+To calculate the minimum balance required for rent exemption, we use Solana’s **Rent** API. This is essential when creating new accounts, such as vaults or mint accounts.
+
+```text title="Minimum Balance Calculation"
+let required_lamports = rent.minimum_balance(Mint::LEN);
+invoke(
+    &solana_program::system_instruction::create_account(
+        payer_account.key,
+        mint_account.key,
+        required_lamports,
+        Mint::LEN as u64,
+        spl_account.key,
+    ),
+    &[
+        payer_account.clone(),
+        mint_account.clone(),
+        system_program.clone(),
+    ],
+)?;
+```
+
+This ensures that the account is initialized with the correct amount of funds to avoid rent collection, which could lead to data deletion.
+
+## Dynamic State Management
+
+Our vault system also manages **dynamic state changes**, such as adjusting the capacity of the vault registry when more vaults are added. This is handled using a **grow** function that expands the capacity of the vault registry.
+
+```text title="Dynamic State Growth"
+pub fn grow(&mut self) {
+    self.capacity *= 2;
+}
+```
+
+This allows the vault system to scale as more users interact with it, ensuring that the registry can accommodate an increasing number of vaults.
+
+## Summary
+
+Effective state management and rent handling are crucial to maintaining the integrity and security of our vault system on Solana. By ensuring accounts are rent-exempt and dynamically managing state changes, we provide a reliable and scalable solution for users to securely manage their assets within the vault system.
+
+---

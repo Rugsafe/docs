@@ -1,0 +1,51 @@
+---
+sidebar_position: 3
+---
+
+# Depositing
+
+Depositing tokens into a vault is a fundamental operation in the vault system. This process allows users to store assets securely while interacting with the protocol.
+
+## Overview of Depositing
+
+Depositing tokens into a vault involves transferring a specific amount of tokens from the user to the vault. During this process, the system ensures that the user’s tokens are securely held within the vault while maintaining accurate records of the transaction.
+
+### Key Concepts
+
+- **Token Transfer**: The core of depositing revolves around transferring tokens from the user’s account to the vault. This ensures the user’s assets are securely locked within the vault for future use.
+  
+- **Token Validation**: Before tokens are deposited, validation steps are performed to ensure the tokens match the expected mint type and ownership, preventing errors and ensuring compatibility.
+
+- **Ownership Confirmation**: The protocol verifies that the depositor owns the tokens being transferred, safeguarding the vault from unauthorized access or errors.
+
+## Steps Involved in Depositing
+
+Depositing tokens into a vault follows a well-structured process that ensures proper handling of user assets.
+
+### 1. Token Account Verification
+
+Before depositing, the user’s token account is verified to ensure it holds the correct type of token. This includes matching the token mint with the vault’s expected asset.
+
+### 2. Transfer of Tokens
+
+Once the user’s account is verified, the specified amount of tokens is transferred from the user to the vault. This step secures the assets inside the vault, allowing for future interactions such as withdrawals or conversions.
+
+### 3. Token Minting (Optional)
+
+In some cases, depositing tokens may result in minting a secondary token. This minted token can serve as a receipt or proof of ownership for the assets stored in the vault.
+
+:::tip
+Ensure the token accounts are properly initialized and verified before depositing to avoid mismatches or failed transactions.
+:::
+
+## Security in Depositing
+
+To maintain the integrity of the protocol, multiple security checks are in place during the depositing process:
+
+- **Ownership Verification**: Ensures that only the rightful owner can deposit tokens into the vault.
+- **Mint Matching**: Confirms that the deposited tokens match the vault’s mint requirements, preventing invalid deposits.
+
+## Summary
+
+Depositing tokens into a vault is a straightforward yet secure process. By verifying token ownership and carefully managing the transfer, the protocol ensures that assets are safely stored in the vault for future interactions.
+

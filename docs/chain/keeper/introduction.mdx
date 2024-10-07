@@ -1,0 +1,40 @@
+---
+sidebar_position: 1
+---
+
+# Keeper Overview
+
+## Role of the Keeper in Rugsafe's Chain
+
+The **Keeper** is the module's interface for handling on-chain state and managing intents (wills). It interacts with other parts of the chain, such as the `KVStore`, to persist and retrieve data. The Keeper also performs essential functions such as executing intents, managing claims, and verifying access to components.
+
+Key responsibilities of the Keeper:
+- Storing and retrieving intents
+- Managing the state and lifecycle of intents
+- Handling the execution of components (e.g., transfers, contract calls, IBC sends)
+- Managing intent expiration and ensuring correct execution at specific block heights
+
+### Key Keeper Functions
+
+- **CreateWill**: Handles the creation of intents, verifies validity, and stores the intent in the module's state.
+
+```go
+func (k *Keeper) CreateWill(ctx context.Context, msg *types.MsgCreateWillRequest) (*types.Will, error) {
+    store := k.storeService.OpenKVStore(ctx)
+
+    // Verify block height and ensure will can be created
+    if sdk.UnwrapSDKContext(ctx).BlockHeight() > msg.Height {
+        return nil, errors.Wrapf(sdkerrors.ErrInvalidRequest, "block height too high")
+    }
+
+    ...
+
+    return &will, nil
+}
+```
+
+- **Claim**: Processes a claim on a will component, verifies it, and marks the component as claimed if valid.
+
+- **ExecuteContract**: Executes a contract call when a will reaches its target block height.
+
+The Keeper is responsible for securely managing intents and ensuring their correct execution as per the logic defined in the module.

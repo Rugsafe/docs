@@ -1,0 +1,104 @@
+---
+sidebar_position: 2
+---
+
+# Intent Lifecycle
+
+The lifecycle of an intent involves creation, execution, expiration, and claiming. This section explains the steps from when an intent is created through to the claim process.
+
+## Creation of Intents
+
+Intents are created through the `MsgCreateWill` message, which initiates the process of intent management. This message includes details about the intent such as the creator, beneficiary, target height, and components.
+
+The main flow of creating intents is handled in the `CreateWill` function.
+
+```go
+func (m msgServer) CreateWill(
+    ctx context.Context,
+    msg *types.MsgCreateWillRequest,
+) (*types.MsgCreateWillResponse, error) {
+    will, err := m.keeper.CreateWill(ctx, msg)
+    if err != nil {
+        return nil, err
+    }
+    return &types.MsgCreateWillResponse{ /* ... */ }
+}
+```
+
+This function invokes `CreateWill` in the Keeper, which validates the height and stores the intent in the KVStore. Here's the core of the Keeper logic:
+
+```go
+func (k *Keeper) CreateWill(ctx context.Context, msg *types.MsgCreateWillRequest) (*types.Will, error) {
+    if sdk.UnwrapSDKContext(ctx).BlockHeight() > msg.Height {
+        return nil, errors.Wrap(sdkerrors.ErrInvalidRequest, "invalid height")
+    }
+
+    will := types.Will{ /* Fields populated from msg */ }
+    willBz := k.cdc.MustMarshal(&will)
+    store.Set([]byte(types.GetWillKey(will.ID)), willBz)
+
+    return &will, nil
+}
+```
+
+The intent is now stored on-chain, waiting for execution or claims at the specified block height.
+
+## Expiration and Execution of Intents
+
+When the target block height is reached, intents are processed and marked as expired. The `BeginBlocker` function handles this by checking for any intents scheduled at the current block height.
+
+```go
+func (k Keeper) BeginBlocker(ctx sdk.Context) error {
+    blockHeight := ctx.BlockHeight()
+    willIDs := k.getWillIDsByHeight(blockHeight)
+    
+    for _, willID := range willIDs {
+        will, err := k.GetWillByID(ctx, willID)
+        if err != nil { continue }
+
+        for _, component := range will.Components {
+            switch c := component.ComponentType.(type) {
+            case *types.ExecutionComponent_Transfer:
+                k.ExecuteTransfer(ctx, component, *will)
+            case *types.ExecutionComponent_Contract:
+                k.ExecuteContract(ctx, c, will.Creator)
+            }
+
+            component.Status = "executed"
+        }
+
+        will.Status = "expired"
+        k.updateWillStatus(ctx, will)
+    }
+
+    return nil
+}
+```
+
+The function processes each component of the intent (e.g., transfers or contract executions) and marks them as "executed." It then updates the intent status to "expired."
+
+## Claiming Components of Intents
+
+Once an intent has expired, its components can be claimed using the `Claim` function.
+
+```go
+func (k Keeper) Claim(ctx context.Context, msg *types.MsgClaimRequest) error {
+    will, err := k.GetWillByID(ctx, msg.WillId)
+    if err != nil || will.Status != "expired" {
+        return fmt.Errorf("invalid claim attempt")
+    }
+
+    for i, component := range will.Components {
+        if component.Id == msg.ComponentId && component.Status == "active" {
+            component.Status = "claimed"
+            return k.updateWillStatus(ctx, will, i)
+        }
+    }
+
+    return fmt.Errorf("component not found or inactive")
+}
+```
+
+The claim process validates the component's status and access rights, and processes the claim based on its type (Schnorr, Pedersen, etc.). Once a claim is successfully processed, the component’s status is updated to "claimed."
+
+By completing the claim process, the intent lifecycle is fulfilled.

@@ -1,0 +1,38 @@
+---
+sidebar_position: 1
+---
+
+# Overview of Rugsafe's Chain
+
+Rugsafe's chain evolved from the original Willchain research project, which aimed to manage decentralized intents (formerly referred to as wills). These intents represent predefined actions to be executed on the blockchain, governed by the system's modules and state management.
+
+## Historical Background: From Willchain to Rugsafe
+
+Willchain was an experimental chain designed to securely manage wills, representing on-chain actions or assets intended for future execution. This concept evolved into the Rugsafe chain, which retains the key features of Willchain while expanding its utility. The term "will" has been replaced with **intents**, although the underlying structure remains similar. 
+
+Rugsafe continues the core idea of managing these intents with robust decentralized logic, providing security and transparency for users who wish to define automated actions on-chain.
+
+## Purpose of Rugsafe's Chain
+
+Rugsafe's chain is designed to handle intents, which are triggered under predefined conditions, such as at a specific block height or upon meeting certain criteria. These intents facilitate a wide range of decentralized actions, including token transfers, contract execution, and cross-chain messages. The goal is to enable seamless management of these actions in a trustless, autonomous environment.
+
+The key objectives of Rugsafe's chain are:
+- **Security**: Ensuring that intents execute as defined, without manipulation or interference.
+- **Automation**: Enabling automated contract interactions and token transfers.
+- **Cross-chain Support**: Leveraging IBC (Inter-Blockchain Communication) to enable intents to trigger actions on multiple chains.
+
+## High-Level Architecture
+
+Rugsafe is built on the **Cosmos SDK**, which provides a modular framework for building blockchain applications. In Rugsafe’s chain, Wasm smart contracts are integrated to extend the functionality and flexibility of the platform, allowing developers to create and manage complex workflows tied to intents.
+
+Rugsafe’s architecture includes:
+- **Cosmos SDK Modules**: The Will (Intent) Module, Wasm Module, and IBC Module work in harmony to manage and execute intents.
+- **Wasm Contracts**: Contracts handle more complex logic within intents, enabling dynamic and programmable execution paths.
+- **IBC Integration**: The IBC protocol allows intents to trigger actions across multiple chains, enabling cross-chain interoperability.
+
+## Role of the Will (Intent) Module
+
+The core of Rugsafe’s chain revolves around the **Will Module**, which handles the creation, storage, and execution of intents. This module is responsible for ensuring that the conditions specified in the intent are met before execution, whether it involves asset transfers, contract execution, or message passing across chains.
+
+While the module still retains the name "Will Module" from the research phase, it now serves as the backbone of Rugsafe’s intent system.
+

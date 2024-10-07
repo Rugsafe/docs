@@ -1,0 +1,43 @@
+---
+sidebar_position: 3
+---
+
+# Gnark Claims
+
+## Overview of Gnark-based Claims in Rugsafe
+
+Gnark is a library for zero-knowledge proofs that allows for the verification of claims without revealing the underlying information. Rugsafe utilizes Gnark to enable claims where the proof can confirm the validity of the claim without disclosing the actual values involved.
+
+### How Gnark Claims Work
+
+In Rugsafe, Gnark claims are structured to allow users to submit a proof along with their claim. This proof verifies that the claimant possesses the necessary information to support their claim. The use of Gnark ensures that the verification process is efficient and secure.
+
+### Verifying Gnark Claims
+
+The verification of Gnark claims involves checking the provided proof against the claim's public inputs. If the proof is valid, the claim is considered legitimate.
+
+```go
+func (k Keeper) processGnarkClaim(ctx context.Context, claim *types.MsgClaimRequest_GnarkClaim, will *types.Will, componentIndex int) error {
+    // Extract the proof and public inputs from the claim
+    proof := claim.GnarkClaim.Proof
+    publicInputs := claim.GnarkClaim.PublicInputs
+
+    // Verify the proof using the Gnark library
+    isValid := gnark.Verify(proof, publicInputs) // Simplified verification call
+    if !isValid {
+        return fmt.Errorf("Gnark proof verification failed")
+    }
+
+    // Mark the component as claimed
+    will.Components[componentIndex].Status = "claimed"
+    return k.updateWillStatusAndStore(ctx, will, componentIndex)
+}
+```
+
+### The Claim Verification Process
+
+1. **Extract Proof and Inputs**: The proof and public inputs are extracted from the Gnark claim.
+2. **Verify the Proof**: The verification function checks the legitimacy of the proof against the public inputs.
+3. **Claiming the Component**: If the proof is valid, the component is marked as claimed.
+
+Gnark claims enhance the security of the Rugsafe protocol by allowing claims to be validated while maintaining user privacy and data confidentiality.

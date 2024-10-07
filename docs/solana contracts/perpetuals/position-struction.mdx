@@ -1,0 +1,92 @@
+---
+sidebar_position: 2
+---
+
+# Position Structure
+
+In the perpetual contracts system, a **Position** represents a user's stake in the market, whether it's a long or short position. Each position holds critical data such as the side of the trade, collateral information, and market-specific details.
+
+## Core Position Structure
+
+The **Position** struct encapsulates all the essential information needed to manage an open trade on the platform. Each position is unique to a user and is linked to a liquidity pool and a custody account.
+
+```text title="Position Struct"
+#[derive(Debug, Clone, BorshSerialize, BorshDeserialize, Default)]
+pub struct Position {
+    pub owner: Pubkey, 
+    pub pool: Pubkey,  
+    pub custody: Pubkey, 
+    pub collateral_custody: Pubkey, 
+    pub open_time: i64, 
+    pub update_time: i64, 
+    pub side: Side,  
+    pub price: u64,  
+    pub size_usd: u64, 
+    pub borrow_size_usd: u64, 
+    pub collateral_usd: u64, 
+    pub unrealized_profit_usd: u64, 
+    pub unrealized_loss_usd: u64, 
+    pub cumulative_interest_snapshot: u128,
+    pub locked_amount: u64, 
+    pub collateral_amount: u64, 
+}
+```
+
+### Key Fields
+
+- **Owner**: The public key of the user that holds this position. It uniquely identifies which user this position belongs to.
+  
+- **Pool**: The liquidity pool in which this position operates. Every position is tied to a specific market through the pool, meaning that the position is subject to the market conditions of that pool.
+  
+- **Custody**: The **custody account** holding the assets for this position. Custody ensures that the assets are securely held while the position is open.
+  
+- **Collateral Custody**: This is the public key of the custody account where the **collateral** for the position is held. Collateral serves as a safeguard against liquidation by ensuring that there is enough locked value to cover potential losses.
+
+- **Side**: Defines whether the position is **long** or **short**. A **long** position profits from the price going up, while a **short** position profits from the price going down.
+
+- **Size in USD**: This represents the total size of the position, denominated in USD. It helps in calculating the leverage and exposure the user has in the market.
+
+- **Unrealized Profit/Loss**: These fields track the potential profit or loss of the position at the current market price. Unrealized profit or loss means that the position is still open, so these values fluctuate with the market.
+
+### Position Lifecycle
+
+A position begins when a user opens a trade by locking collateral and choosing whether to go long or short. Over time, the position can be updated (e.g., adding or removing collateral), and it will continue to accrue interest and reflect unrealized profit or loss based on market movements.
+
+The position can either be **closed manually** by the user, or **liquidated** if the collateral becomes insufficient to maintain the position.
+
+## Memory and Size Considerations
+
+The size of the **Position** struct is predefined using the `LEN` constant:
+
+```text title="Position Struct Size"
+impl Position {
+    pub const LEN: usize = 32 * 4 + 8 * 11 + 16 + 1;
+}
+```
+
+This constant ensures that the position is efficiently stored on-chain, with enough space allocated for all its fields. It includes:
+
+- **4 Pubkeys** (32 bytes each)
+- **11 u64 fields**
+- **1 u128 field**
+- **1 enum (Side)**
+
+By predefining the size, we ensure that each position is stored consistently across the network.
+
+## User Positions Management
+
+Each user has a **UserPositions** account that keeps track of their positions and the next available index. This struct is simple but essential for managing multiple positions:
+
+```text title="UserPositions Struct"
+#[derive(Default, Debug, BorshSerialize, BorshDeserialize)]
+pub struct UserPositions {
+    pub owner: Pubkey,          // Owner's public key
+    pub next_position_idx: u64, // Pointer to the next position index
+}
+```
+
+The **UserPositions** account allows each user to maintain multiple positions without conflicts. It tracks the next available index for new positions, ensuring that positions are organized and easy to reference.
+
+## Summary
+
+The **Position** struct is central to how perpetual contracts work on Solana. It encapsulates the entire lifecycle of a position, from its creation, through updates, and ultimately to closure. Understanding how positions are managed, stored, and referenced is crucial to working with perpetual contracts. The **UserPositions** struct adds another layer of management, ensuring that each user can safely maintain multiple positions.

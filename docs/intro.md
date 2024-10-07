@@ -1,27 +1,26 @@
-# RugSafe: A Protocol for Protecting Digital Assets from Rug Pulls
+# Protocol Paper
 
 **Version:** 0.0.1  
 **Date:** August 1, 2024  
-**Contact:** [info@rugsafe.org](mailto:info@rugsafe.org)
+**Contact:** [info@rugsafe.io](mailto:info@rugsafe.io)
+
+
+[Read the Full Protocol Paper](https://rugsafe.io/assets/paper/rugsafe.pdf)
 
 ## Abstract
 
-RugSafe introduces a novel protocol designed to mitigate the risks associated with rug pulls in decentralized finance (DeFi). By leveraging cryptographic primitives and economic incentives, RugSafe provides a framework that ensures the security and recoverability of assets when fraudulent activities are detected. The protocol is built around the concept of vaults, where rugged tokens are securely stored, and an incentive mechanism that mitigates losses and rewards users based on their interaction with the system. RugSafe integrates seamlessly with existing DeFi platforms, offering an additional layer of security without compromising the decentralization principles.
+Rugsafe introduces a comprehensive protocol aimed at mitigating the
+risks of rug pulls in the cryptocurrency ecosystem. By utilizing cryptographic security measures and economic incentives, the protocol provides a secure multichain system for recovering assets and transforming
+rugged tokens into opportunities and rewards. Foundational to Rugsafe
+are specialized vaults where rugged tokens can be securely deposited, and
+anticoin tokens are issued as receipts. These anticoins are designed to
+be inversely pegged to the price movement of the underlying rugged token. Users can utilize these anticoins within the ecosystem or choose to
+burn them, further securing the protocol and earning additional rewards.
+The supply of the native Rugsafe token is dynamically adjusted based on
+the volume, value, and activity of rugged tokens, ensuring stability and
+resilience. By depositing rugged tokens into a vault on several chains,
+and by burning anticoins, users receive incentives on the RugSafe chain.
+This protocol’s vaults are designed to work in heterogenous blockchain
+ecosystems, offering a practical and effective solution to one of the most
+significant challenges in the cryptocurrency market.
 
-## 1. Overview
-
-The RugSafe protocol enables users who hold rugged tokens, denoted as \( C_r \), to deposit these tokens into a specialized vault \( V_r \) and receive an equal amount of antitokens \( C_a \), which are pegged to the inverse price movement of \( C_r \).
-
-### 1.1 Vault Creation and Anticoin Issuance
-
-When a vault \( V_r \) is created for a rugged token \( C_r \), users can deposit \( C_r \) into this vault. Upon deposit, the protocol mints an equal amount of \( C_a \) which is credited to the user's balance.
-
-\[
-C_a = C_r
-\]
-
-The vaults are held in a secured vault structure governed by smart contracts, ensuring that all deposited assets are protected and managed according to the protocol's rules. This approach helps users mitigate their exposure to fraudulent activities by providing a mechanism to recover or hedge their losses effectively.
-
----
-
-**Note:** This is an introductory section and may be expanded as the protocol evolves. Please refer to the detailed sections for more in-depth technical explanations and implementation details.

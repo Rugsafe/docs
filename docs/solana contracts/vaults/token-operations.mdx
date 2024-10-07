@@ -1,0 +1,107 @@
+---
+sidebar_position: 5
+---
+
+# Token Operations
+
+Token management is at the heart of our vault system. Operations such as minting, transferring, and burning tokens are essential to interacting with vaults and ensuring secure and efficient asset management on-chain.
+
+## Key Token Operations
+
+The key operations we perform on tokens within the vault system include:
+
+- **Minting Tokens**: Creating new tokens within the Solana program.
+- **Transferring Tokens**: Moving tokens between user accounts and vaults.
+- **Burning Tokens**: Destroying tokens as part of specific operations like withdrawing or converting.
+
+These operations leverage Solana’s **SPL Token** program, which defines standard interfaces for token-related actions.
+
+### Minting Tokens
+
+Minting is the process of creating new tokens and assigning them to a specific account. In the vault system, we mint tokens such as **aTokens**, which represent deposits of **Token A** within the vault.
+
+```text title="Minting Tokens"
+invoke(
+    &spl_token::instruction::mint_to(
+        &spl_token::id(),
+        mint_atoken_a_account.key,
+        user_atoken_account.key,
+        payer_account.key,
+        &[], // No multisig signing required
+        amount,
+    )?,
+    &[
+        mint_atoken_a_account.clone(),
+        user_atoken_account.clone(),
+        payer_account.clone(),
+    ],
+)?;
+```
+
+Here, the **mint_to** function creates a specific number of tokens (`amount`) and assigns them to the user's account. These minted tokens represent ownership or proof of deposit within the vault system.
+
+### Transferring Tokens
+
+The transfer operation is crucial when users deposit or withdraw tokens from vaults. Transferring moves tokens from one account (e.g., the user’s account) to another account (e.g., the vault account).
+
+```text title="Transferring Tokens"
+invoke(
+    &spl_token::instruction::transfer(
+        &spl_token::id(),
+        user_token_a_account.key,
+        vault_account.key,
+        payer_account.key,
+        &[], // No multisig signing required
+        amount,
+    )?,
+    &[
+        user_token_a_account.clone(),
+        vault_account.clone(),
+        payer_account.clone(),
+    ],
+)?;
+```
+
+This function transfers a specific amount of tokens (`amount`) from the user's token account to the vault's token account. The payer account is required to sign the transaction.
+
+### Burning Tokens
+
+Burning tokens removes them from circulation. In the vault system, burning is often used when withdrawing tokens or converting **rTokens** to another token type.
+
+```text title="Burning Tokens"
+invoke(
+    &spl_token::instruction::burn(
+        &spl_token::id(),
+        user_rtoken_account.key,
+        mint_account.key,
+        user_account.key,
+        &[], // No multisig signing required
+        amount,
+    )?,
+    &[
+        user_rtoken_account.clone(),
+        mint_account.clone(),
+        user_account.clone(),
+    ],
+)?;
+```
+
+This burn operation destroys a specific number of tokens (`amount`) from the user's account, updating the total supply and ensuring the correct management of tokens within the vault.
+
+## Ensuring Token Validity
+
+Each token-related operation is validated by checking the mint associated with the user's token account. This ensures that only the correct token types are used in operations like depositing, withdrawing, and burning.
+
+```text title="Mint Validation"
+if user_token_account_info.mint != *mint_token_a_account.key {
+    return Err(ProgramError::InvalidAccountData);
+}
+```
+
+This validation step ensures that only tokens with the correct mint are allowed to be used within the vault system, protecting against unauthorized or incorrect token operations.
+
+## Summary
+
+Token operations such as minting, transferring, and burning are integral to the functioning of the vault system. These operations leverage Solana’s SPL Token program to manage tokens securely and efficiently, ensuring that users can interact with vaults, deposit tokens, and withdraw assets in a seamless and validated manner.
+
+---

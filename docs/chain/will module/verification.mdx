@@ -1,0 +1,79 @@
+---
+sidebar_position: 5
+---
+
+# Claim Verification Methods
+
+Rugsafe’s chain implements robust verification methods to ensure that only authorized users can claim intent components. Three primary claim types are supported: **Schnorr Signatures**, **Pedersen Commitments**, and **Gnark-based Claims**. Each of these claim types provides a unique approach to ensuring the integrity of claims.
+
+## Schnorr Signature Claims
+
+Schnorr signature claims allow users to prove ownership over a claimable component using a cryptographic signature. This method involves validating the public key, signature, and message provided by the claimer.
+
+### Schnorr Verification Highlights
+
+In the `Claim` function, Schnorr signature claims are processed as follows:
+
+```go
+case *types.MsgClaimRequest_SchnorrClaim:
+    k.processSchnorrClaim(ctx, claim, will, componentIndex)
+```
+
+The `processSchnorrClaim` function checks the public key, signature, and message validity:
+
+```go
+if !schnorr.Verify(messageScalar, schnorrSignature, publicKeyPoint) {
+    return fmt.Errorf("schnorr signature verification failed")
+}
+```
+
+Once verified, the component's status is updated, and the claim is processed.
+
+## Pedersen Commitment Claims
+
+Pedersen commitments are a cryptographic mechanism that hides the value being committed to, but allows verifiable claims without revealing the value. This method ensures privacy while still proving ownership of the commitment.
+
+### Pedersen Commitment Highlights
+
+When a Pedersen commitment claim is submitted, it is processed as follows:
+
+```go
+case *types.MsgClaimRequest_PedersenClaim:
+    k.processPedersenClaim(ctx, will, componentIndex, claim)
+```
+
+The `processPedersenClaim` function handles the deserialization and validation of the commitment:
+
+```go
+storedCommitmentPoint, err := k.DeserializeCommitment(storedCommitment.Commitment)
+resultCommitment := k.AddCommitments(storedCommitmentPoint, claimCommitmentPoint)
+```
+
+If the resulting commitment matches the target commitment, the claim is verified:
+
+```go
+if !resultCommitment.Equals(&targetCommitmentPoint) {
+    return fmt.Errorf("commitment verification failed")
+}
+```
+
+This ensures that the claim is valid without revealing the committed value.
+
+## Gnark Claims
+
+Gnark claims are based on zk-SNARK proofs, which allow users to prove knowledge of certain information without revealing it. This method provides strong privacy guarantees for claimers.
+
+### Gnark Proof Highlights
+
+Although the current implementation is in development, here’s how Gnark-based claims are handled:
+
+```go
+case *types.MsgClaimRequest_GnarkClaim:
+    fmt.Println("Processing Gnark claim with proof:", claim.GnarkClaim.Proof)
+```
+
+This placeholder will eventually be replaced with full zk-SNARK verification logic.
+
+## Conclusion
+
+Rugsafe’s claim verification system is designed to be secure, flexible, and privacy-preserving. Whether using Schnorr signatures, Pedersen commitments, or future Gnark-based proofs, the system ensures that only authorized users can successfully claim components within intents. This robust framework ensures the integrity and security of intent execution.

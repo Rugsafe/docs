@@ -1,0 +1,97 @@
+---
+sidebar_position: 3
+---
+
+# Intent Components
+
+Intents consist of different components that dictate what actions will be executed once the intent reaches the specified block height. Components can include transfers, contract calls, IBC messages, or claims. Each component is handled individually based on its type.
+
+## Overview of Intent Components
+
+The core types of intent components include:
+
+- **Execution Components**: These handle actual execution actions like token transfers, contract calls, or IBC messages.
+- **Claim Components**: Components that can be claimed by a specific user after the intent expires.
+
+### Execution Components
+
+Execution components are triggered automatically when the intent reaches its target height. Each component is handled based on its type.
+
+#### Token Transfers
+
+A token transfer is a common execution component. Here's how it's processed in the `BeginBlocker`:
+
+```go
+switch component.ComponentType.(type) {
+case *types.ExecutionComponent_Transfer:
+    k.ExecuteTransfer(ctx, component, *will)
+    component.Status = "executed"
+}
+```
+
+The transfer component logic is handled in the `ExecuteTransfer` function:
+
+```go
+func (k Keeper) ExecuteTransfer(ctx sdk.Context, component *types.ExecutionComponent, will types.Will) error {
+    coins := sdk.NewCoins(*component.GetTransfer().Amount)
+    fromAddr := sdk.AccAddress(will.Creator)
+    toAddr := sdk.AccAddress(component.GetTransfer().To)
+
+    return k.bankKeeper.SendCoins(ctx, fromAddr, toAddr, coins)
+}
+```
+
+#### Contract Calls
+
+Contract calls are another component type, allowing intents to execute contract logic:
+
+```go
+case *types.ExecutionComponent_Contract:
+    k.ExecuteContract(ctx, component.GetContract(), will.Creator)
+    component.Status = "executed"
+```
+
+Contract execution is managed in `ExecuteContract`:
+
+```go
+func (k Keeper) ExecuteContract(ctx sdk.Context, contract *types.ExecutionComponent_Contract, caller string) ([]byte, error) {
+    contractAddr := sdk.AccAddress(contract.Address)
+    callerAddr := sdk.AccAddress(caller)
+
+    return k.permissionedWasmKeeper.Execute(ctx, contractAddr, callerAddr, contract.Data, sdk.NewCoins())
+}
+```
+
+#### IBC Messages
+
+Intents can also send IBC messages as part of their execution:
+
+```go
+case *types.ExecutionComponent_IbcMsg:
+    k.SendIBCMessage(ctx, component, *will)
+    component.Status = "executed"
+```
+
+The `SendIBCMessage` function constructs and sends an IBC packet:
+
+```go
+func (k *Keeper) SendIBCMessage(ctx sdk.Context, component *types.ExecutionComponent, will types.Will) error {
+    packet := channeltypes.NewPacket(component.GetIbcMsg().Data, sequence, "will", component.GetIbcMsg().Channel, timeoutHeight, timeoutTimestamp)
+    return k.channelKeeper.SendPacket(ctx, channelCap, "will", component.GetIbcMsg().Channel, packet)
+}
+```
+
+### Claim Components
+
+Claim components can only be activated after the intent has expired. These components can be claimed by users, provided they meet the necessary criteria and pass verification.
+
+The claim is processed like this:
+
+```go
+case *types.ExecutionComponent_Claim:
+    component.Status = "active" // Mark as claimable after expiration
+```
+
+Once marked as active, a user can submit a claim via the `Claim` function. The verification process will ensure the user has the right to claim the component, either through Schnorr signatures, Pedersen commitments, or other supported mechanisms.
+
+By structuring intents with these various components, Rugsafe's chain allows for a flexible and secure execution of decentralized logic.
