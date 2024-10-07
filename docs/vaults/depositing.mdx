@@ -16,7 +16,7 @@ Depositing tokens into a vault involves transferring a specific amount of tokens
   
 - **Token Validation**: Before tokens are deposited, validation steps are performed to ensure the tokens match the expected mint type and ownership, preventing errors and ensuring compatibility.
 
-- **Ownership Confirmation**: The protocol verifies that the depositor owns the tokens being transferred, safeguarding the vault from unauthorized access or errors.
+- **Ownership Confirmation**: While anyone can deposit tokens into the vault, the protocol verifies that the deposited tokens are indeed of the type accepted by the vault, safeguarding it from unauthorized access or errors.
 
 ## Steps Involved in Depositing
 
@@ -30,9 +30,13 @@ Before depositing, the user’s token account is verified to ensure it holds the
 
 Once the user’s account is verified, the specified amount of tokens is transferred from the user to the vault. This step secures the assets inside the vault, allowing for future interactions such as withdrawals or conversions.
 
-### 3. Token Minting (Optional)
+### 3. Anticoin Minting
 
-In some cases, depositing tokens may result in minting a secondary token. This minted token can serve as a receipt or proof of ownership for the assets stored in the vault.
+Upon depositing rugged tokens, the protocol automatically mints an equal amount of anticoins as receipts. This means:
+
+- **Anticoin Generation**: For every token deposited, a corresponding anticoin is minted, which serves as proof of the user's stake in the vault. This is a critical mechanism ensuring that users receive a clean representation of their original tokens.
+
+- **Value Relation**: The anticoins are inversely pegged to the price movement of the underlying rugged token, providing users with a protective hedge against further depreciation of their assets.
 
 :::tip
 Ensure the token accounts are properly initialized and verified before depositing to avoid mismatches or failed transactions.
@@ -42,10 +46,10 @@ Ensure the token accounts are properly initialized and verified before depositin
 
 To maintain the integrity of the protocol, multiple security checks are in place during the depositing process:
 
-- **Ownership Verification**: Ensures that only the rightful owner can deposit tokens into the vault.
-- **Mint Matching**: Confirms that the deposited tokens match the vault’s mint requirements, preventing invalid deposits.
+- **Vault Token Acceptance**: Each vault is designed to accept only one specific type of token. Users can only deposit tokens that match the vault’s accepted asset type.
+
+- **Anticoin Requirement for Withdrawal**: Users can only withdraw from the vault if they possess the corresponding anticoins issued for that vault, ensuring that withdrawals are tied directly to deposits.
 
 ## Summary
 
-Depositing tokens into a vault is a straightforward yet secure process. By verifying token ownership and carefully managing the transfer, the protocol ensures that assets are safely stored in the vault for future interactions.
-
+Depositing tokens into a vault is a straightforward yet secure process. By verifying token ownership, enforcing vault-specific token acceptance, and requiring anticoins for withdrawals, the protocol ensures that assets are safely stored in the vault for future interactions while generating the necessary anticoins to represent the user's holdings.
