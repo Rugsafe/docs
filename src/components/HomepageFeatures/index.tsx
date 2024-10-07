@@ -6,38 +6,38 @@ import { useColorMode } from '@docusaurus/theme-common';
 // Define the list of features
 const FeatureList = [
   {
-    title: 'Learn',
-    icon: '⚖️',
+    title: 'Vault Creation',
+    icon: '🏦', // Bank icon to symbolize vaults
     description: (
       <>
-        RugSafe allows you to create your own vaults in minutes, as easily as a smart contract.
+        Users can easily create vaults for securely depositing rugged tokens, facilitating asset recovery with antifraud measures.
       </>
     ),
   },
   {
-    title: 'Create',
-    icon: '📈',
+    title: 'Anticoin Issuance',
+    icon: '💳', // Credit card icon to represent issued anticoins
     description: (
       <>
-        Access the dynamic scaling unlocked by data availability sampling, where scale increases with the number of users.
+        For every deposit, the protocol mints anticoins that represent a user's stake, inversely pegged to the value of the underlying rugged tokens.
       </>
     ),
   },
   {
-    title: 'Developers',
-    icon: '⚙️',
+    title: 'Multichain Support',
+    icon: '🌐', // Globe icon to indicate multichain functionality
     description: (
       <>
-        Learn about rug pulls and how Rugsafe protects you from them.
+        Rugsafe operates across multiple blockchains, allowing users to deposit rugged tokens and access liquidity seamlessly within a heterogeneous ecosystem.
       </>
     ),
   },
   {
-    title: 'Community',
-    icon: '👥',
+    title: 'DeFi Suite',
+    icon: '📊', // Bar chart icon to signify investment opportunities
     description: (
       <>
-        Join the RugSafe community to connect, collaborate, and contribute.
+        The protocol offers a comprehensive DeFi suite, enabling rugged token victims to recover assets and explore new opportunities for growth and investment.
       </>
     ),
   },
