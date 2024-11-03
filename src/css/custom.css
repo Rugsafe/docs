@@ -31,7 +31,7 @@
 
 /* Light mode logo (default) */
 .navbar__brand img {
-  content: url('/img/rugsafe_logo_black_background_with_text.png'); /* Ensure this path is correct */
+  content: url('/img/rugsafe.png'); /* Ensure this path is correct */
 }
 
 /* Dark mode logo */
