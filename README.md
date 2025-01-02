@@ -1,4 +1,4 @@
-# RugSafe Protocol - Docs
+# RugSafe Protocol - Documentation
 
 ![RugSafe Logo](https://rugsafe.io/_next/static/media/logo5.7217ba98.png)
 
@@ -6,10 +6,10 @@ RugSafe is a cutting-edge multichain protocol designed to address and mitigate r
 
 | Status Type          | Status                                                                 |
 |----------------------|-------------------------------------------------------------------------|
-| **Development Build**| [![Development Build](https://github.com/rugsafe/solana-program/actions/workflows/development.yml/badge.svg)](https://github.com/rugsafe/solana-program/actions/workflows/development.yml) |
-| **Issues**           | [![Issues](https://img.shields.io/github/issues/rugsafe/solana-program.svg)](https://github.com/rugsafe/solana-program/issues) |
-| **Last Commit**      | [![Last commit](https://img.shields.io/github/last-commit/rugsafe/solana-program.svg)](https://github.com/rugsafe/solana-program/commits/main) |
-| **License**          | [![License](https://img.shields.io/badge/license-APACHE-blue.svg)](https://github.com/rugsafe/solana-program/blob/main/LICENSE) |
+| **Development Build**| [![Development Build](https://github.com/rugsafe/RugSafeDocs/actions/workflows/pipeline.yml/badge.svg)](https://github.com/rugsafe/RugSafeDocs/actions/workflows/pipeline.yml) |
+| **Issues**           | [![Issues](https://img.shields.io/github/issues/rugsafe/RugSafeDocs.svg)](https://github.com/rugsafe/RugSafeDocs/issues) |
+| **Last Commit**      | [![Last commit](https://img.shields.io/github/last-commit/rugsafe/RugSafeDocs.svg)](https://github.com/rugsafe/RugSafeDocs/commits/main) |
+| **License**          | [![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://github.com/rugsafe/RugSafeDocs/blob/main/LICENSE) |
 
 
 ### Installation
@@ -49,3 +49,18 @@ $ GIT_USER=<Your GitHub username> yarn deploy
 ```
 
 If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+
+
+## Contributing
+
+We welcome contributions to RugSafe! Join our community and help shape the future of DeFi:
+- **Discord**: [Join our community](https://discord.gg/ecMQ2D6nsu)
+- **Telegram**: [Join the chat](https://t.me/rugsafe)
+
+## License
+
+RugSafe is released under the [GPL License](LICENSE).
+
+---
+
+**Note**: This repository is under active development and may undergo significant changes. For a detailed understanding of RugSafe, refer to our [white paper](https://rugsafe.io/assets/paper/rugsafe.pdf).
