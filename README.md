@@ -6,10 +6,10 @@ RugSafe is a cutting-edge multichain protocol designed to address and mitigate r
 
 | Status Type          | Status                                                                 |
 |----------------------|-------------------------------------------------------------------------|
-| **Development Build**| [![Development Build](https://github.com/rugsafe/RugSafeDocs/actions/workflows/pipeline.yml/badge.svg)](https://github.com/rugsafe/RugSafeDocs/actions/workflows/pipeline.yml) |
-| **Issues**           | [![Issues](https://img.shields.io/github/issues/rugsafe/RugSafeDocs.svg)](https://github.com/rugsafe/RugSafeDocs/issues) |
-| **Last Commit**      | [![Last commit](https://img.shields.io/github/last-commit/rugsafe/RugSafeDocs.svg)](https://github.com/rugsafe/RugSafeDocs/commits/main) |
-| **License**          | [![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://github.com/rugsafe/RugSafeDocs/blob/main/LICENSE) |
+| **Development Build**| [![Development Build](https://github.com/rugsafe/rugsafe-docs/actions/workflows/pipeline.yml/badge.svg)](https://github.com/rugsafe/rugsafe-docs/actions/workflows/pipeline.yml) |
+| **Issues**           | [![Issues](https://img.shields.io/github/issues/rugsafe/rugsafe-docs.svg)](https://github.com/rugsafe/rugsafe-docs/issues) |
+| **Last Commit**      | [![Last commit](https://img.shields.io/github/last-commit/rugsafe/rugsafe-docs.svg)](https://github.com/rugsafe/rugsafe-docs/commits/main) |
+| **License**          | [![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://github.com/rugsafe/rugsafe-docs/blob/main/LICENSE) |
 
 
 ### Installation
